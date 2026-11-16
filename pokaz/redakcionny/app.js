@@ -80,6 +80,7 @@ d.addEventListener('input', e => { if (e.target.type !== 'tel') return;
 /* ---------- cursor ---------- */
 const cur = d.querySelector('.cur');
 if (fine) {
+  H.classList.add('custom-cursor');
   let x=innerWidth/2,y=innerHeight/2,cx=x,cy=y;
   addEventListener('mousemove', e => { x=e.clientX; y=e.clientY; }, {passive:true});
   (function loop(){ cx+=(x-cx)*.2; cy+=(y-cy)*.2; cur.style.transform=`translate3d(${cx}px,${cy}px,0)`; requestAnimationFrame(loop); })();

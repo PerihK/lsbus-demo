@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#f3f0ea">
 <link rel="preload" href="../fonts/inter-tight-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../fonts/cormorant-garamond-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20261117">
 <meta name="robots" content="noindex, nofollow, noarchive">
 </head>
 <body data-page="home">
@@ -143,7 +143,7 @@
 <script src="../vendor/gsap.min.js"></script>
 <script src="../vendor/ScrollTrigger.min.js"></script>
 <script src="../vendor/lenis.min.js"></script>
-<script src="app.js"></script>
+<script src="app.js?v=20261117"></script>
 <script>
 (function(){
 const L = LS, G = window.gsap, ST = window.ScrollTrigger, d = document;
@@ -218,13 +218,6 @@ LSApp.ready(() => {
     .from('.hero .round',{scale:0,rotate:-90,duration:1.4,ease:'expo.out'},'-=1.1')
     .from('.hero-b',{'--bw':0,duration:1},'<');
   G.to('.hero h1',{yPercent:-12,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
-
-  /* expanding image */
-  const ex = G.timeline({scrollTrigger:{trigger:'#expand',start:'top top',end:'+=120%',pin:true,scrub:1}});
-  ex.to('#expand .frame',{clipPath:'inset(0% 0% 0% 0% round 0px)',ease:'none'})
-    .to('#expand .frame img',{scale:1,ease:'none'},0)
-    .from('#expand .cap .ln>span',{yPercent:120,stagger:.1,ease:'power3.out',duration:.4},.55)
-    .from('#expand .cap p',{autoAlpha:0,y:20,duration:.3},.7);
 
   /* fleet horizontal */
   if (desk) {

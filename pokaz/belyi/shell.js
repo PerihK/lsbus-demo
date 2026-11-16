@@ -112,7 +112,7 @@ requestAnimationFrame(par);
 const G = window.gsap, ST = window.ScrollTrigger;
 const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
 /* cursor */
-if (fine) { const cd = d.querySelector('.cd'), cr = d.querySelector('.cr'); let x=-100,y=-100,rx=x,ry=y;
+if (fine) { H.classList.add('custom-cursor'); const cd = d.querySelector('.cd'), cr = d.querySelector('.cr'); let x=-100,y=-100,rx=x,ry=y;
   addEventListener('mousemove', e => { x=e.clientX; y=e.clientY; cd.style.transform=`translate3d(${x}px,${y}px,0)`; }, {passive:true});
   (function loop(){ rx+=(x-rx)*.16; ry+=(y-ry)*.16; cr.style.transform=`translate3d(${rx}px,${ry}px,0)`; requestAnimationFrame(loop); })();
   d.addEventListener('mouseover', e => { const t = e.target.closest('[data-cursor]'), a = e.target.closest('a,button,input,select');
