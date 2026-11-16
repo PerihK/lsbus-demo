@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LSBUS — аренда автобусов и микроавтобусов в Петербурге</title>
+<meta name="description" content="Автобусы Yutong, микроавтобусы Mercedes-Benz Sprinter и минивэны с водителем. Выберите транспорт по вместимости и рассчитайте поездку по Петербургу и области.">
+<meta name="theme-color" content="#103a79"><link rel="icon" href="../img/logo.png">
+<link rel="preload" href="../fonts/inter-tight-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../img/yutong-6128-1.jpg" as="image">
+<link rel="stylesheet" href="style.css?v=9"><link rel="stylesheet" href="identity.css?v=9">
+<script src="../data.js" defer></script><script src="../vendor/gsap.min.js" defer></script><script src="../vendor/ScrollTrigger.min.js" defer></script><script src="app.js?v=9" defer></script><script src="motion.js?v=9" defer></script>
+<meta name="robots" content="noindex, nofollow, noarchive">
+</head>
+<body data-page="home">
+<div id="site-header"></div>
+<main>
+<section class="journey-hero" id="journey-hero" aria-labelledby="journey-title">
+ <div class="journey-scene" id="journey-scene">
+  <img class="journey-panorama" id="journey-panorama" src="../img/most.jpg" alt="Дворцовый мост — фотография с действующего сайта LSBUS" fetchpriority="high">
+  <svg class="journey-mask" id="journey-mask" aria-hidden="true"><defs><mask id="brand-window" maskUnits="userSpaceOnUse"><rect id="mask-base" fill="white"/><g id="mask-group"><text id="mask-type" text-anchor="middle" fill="black" font-family="InterTight" font-weight="800">LSBUS</text></g></mask></defs><rect id="mask-cover" fill="#ffffff" mask="url(#brand-window)"/></svg>
+  <div class="journey-intro" id="journey-intro"><div class="journey-top"><span>Логистик Систем</span><span>Пассажирские перевозки / Санкт-Петербург</span><span>Работаем 24/7</span></div><div class="journey-bottom"><div><h1 id="journey-title">Автобусы и микроавтобусы<br> с водителем в Петербурге.</h1><p>Ваш город. Ваша компания. Ваш маршрут.</p></div><div class="journey-start"><a class="button button-red" href="#park">Подобрать транспорт <span>11 моделей</span></a><span class="scroll-invite"><i></i>Листайте. Петербург ближе, чем кажется.</span></div></div></div>
+  <div class="journey-reveal" id="journey-reveal"><span class="eyebrow">Город, с которого всё начинается</span><div class="reveal-title">Петербург.<br> В вашем<br> <em>распоряжении.</em></div><div class="reveal-bottom"><p>Экскурсии, трансферы, служебная развозка.<br> По городу, области и дальше.</p><a href="#uslugi">Выбрать свою поездку</a></div></div>
+ </div>
+</section>
+<section class="trip-section wrap" aria-label="Подбор поездки">
+  <div class="trip-intro"><span class="eyebrow">Начнём с вашей поездки</span><h2>Куда и каким составом?</h2></div>
+  <form id="trip-form" class="trip-form">
+    <label><span>Задача</span><select name="occasion" aria-label="Задача поездки"><option value="tour">Экскурсия</option value="transfer">Трансфер</option><option value="staff">Развозка сотрудников</option><option value="kids">Детская поездка</option><option value="wedding">Свадьба</option><option value="intercity">Межгород</option></select></label>
+    <label><span>Пассажиры</span><input name="pax" type="number" min="1" max="500" value="18" required inputmode="numeric" aria-label="Количество пассажиров"></label>
+    <label><span>Дата поездки</span><input name="date" type="date" aria-label="Дата поездки"></label>
+    <button class="button button-ink" type="submit">Подобрать</button>
+  </form>
+</section>
+
+<section class="services-editorial wrap" id="uslugi" aria-labelledby="services-title"><div class="editorial-heading"><span class="eyebrow">Перевозки под вашу задачу</span><h2 id="services-title">Наши <em>услуги.</em></h2><p>Для туристических групп, компаний и частных поездок.<br> От аэропорта до путешествия за город.</p></div><div class="service-composition"><div class="service-menu" id="service-menu" role="group" aria-label="Направления перевозок"></div><div class="service-stage"><img id="service-photo" src="../img/yutong-6122-1.jpg" alt="Автобус для туристической группы"><div class="service-stage-top"><span id="service-position">01 / 06</span><span>LSBUS / С водителем</span></div><div class="service-stage-content"><h3 id="service-name">Туристическим группам</h3><p id="service-description"></p><div class="service-stage-bottom"><span id="service-price"></span><button class="button" id="service-order" type="button">Обсудить поездку</button></div></div></div></div></section>
+<section class="catalog-section wrap" id="park" aria-labelledby="catalog-title">
+  <div class="editorial-heading"><span class="eyebrow">Свой транспорт для вашей компании</span><h2 id="catalog-title">Наш <em>автопарк.</em></h2><p>Реальные фотографии, вместимость и тарифы.<br> Выберите модель — детали согласуем вместе.</p></div><div class="catalog-search-line"><div id="catalog-search-slot"></div><div class="catalog-actions" id="catalog-actions"></div></div>
+  <div class="category-tabs" role="group" aria-label="Тип транспорта">
+    <button class="category-tab active" data-group="all" aria-pressed="true"><span>Все модели</span><small>Для любой компании</small><b>11</b></button>
+    <button class="category-tab" data-group="bus" aria-pressed="false"><span>Автобусы</span><small>3 модели</small><b>53<sup>места</sup></b><img src="../img/yutong-6128-2.jpg" alt=""></button>
+    <button class="category-tab" data-group="mini" aria-pressed="false"><span>Микроавтобусы</span><small>6 моделей</small><b>20<sup>мест</sup></b><img src="../img/sprinter-black-1.jpg" alt=""></button>
+    <button class="category-tab" data-group="car" aria-pressed="false"><span>Минивэны и седаны</span><small>2 модели</small><b>7<sup>мест</sup></b><img src="../img/vito.jpg" alt=""></button>
+  </div>
+  <div class="catalog-layout">
+    <aside class="filters" id="filters">
+      <div class="filters-title"><h3>Ваш транспорт</h3><button class="text-button" id="reset-filters" type="button">Сбросить</button></div>
+      <label class="filter-label" for="min-seats">Не меньше мест</label>
+      <div class="seats-input"><span class="seat-symbol" aria-hidden="true"></span><input id="min-seats" type="number" min="1" max="500" placeholder="Любое" inputmode="numeric"><span>чел.</span></div>
+      <div class="filter-block"><h4>Оснащение</h4><label class="check"><input type="checkbox" name="amen" value="ac"><span>Кондиционер</span></label><label class="check"><input type="checkbox" name="amen" value="wifi"><span>Wi-Fi</span></label><label class="check"><input type="checkbox" name="amen" value="leather"><span>Кожаный салон</span></label><label class="check"><input type="checkbox" name="amen" value="guide"><span>Место для гида</span></label></div>
+      <div class="filter-help"><span class="mini-logo">LS</span><h4>Не знаете,<br> что выбрать?</h4><p>Расскажите о маршруте. Подберём транспорт под вашу группу.</p><button class="text-button" type="button" data-order>Помочь с выбором</button></div>
+    </aside>
+    <div class="catalog-main">
+      <div class="catalog-toolbar"><div><button class="mobile-filter button button-line" type="button" id="filter-toggle" aria-expanded="false" aria-controls="filters">Фильтры</button><span id="result-count" role="status" aria-live="polite">11 моделей</span><button class="favorite-filter text-button" id="favorite-filter" type="button" aria-pressed="false">Только избранное</button></div><label class="sort-label"><span class="sr-only">Сортировка</span><select id="sort"><option value="default">По умолчанию</option><option value="price-up">Сначала дешевле</option><option value="price-down">Сначала дороже</option><option value="seats-down">Сначала вместительнее</option></select></label></div>
+      <div class="search-summary" id="search-summary" hidden></div>
+      <div class="fleet-grid" id="fleet-grid"></div>
+      <div class="empty-state" id="empty-state" hidden><span class="empty-number">0</span><h3>Пока нет точного совпадения</h3><p>Измените фильтры или расскажите о поездке.<br> Для большой группы можно подобрать несколько машин.</p><button class="button button-ink" type="button" data-order>Помочь с подбором</button><button class="text-button" id="empty-reset" type="button">Показать весь автопарк</button></div>
+      <p class="catalog-note">Указаны начальные почасовые тарифы. Стоимость и наличие транспорта на вашу дату подтвердит менеджер.</p>
+    </div>
+  </div>
+</section>
+
+<section class="estimate-section" id="raschet">
+ <div class="wrap estimate-layout"><div class="estimate-copy"><span class="eyebrow">Ориентир до разговора с менеджером</span><h2>Стоимость<br> вашей <em>поездки.</em></h2><p>Выберите число пассажиров и часы.<br> Покажем подходящую машину и ориентир<br class="desktop"> по почасовому тарифу.</p></div>
+ <div class="estimate-panel"><div class="estimate-controls"><label for="calc-pax">Пассажиры <output id="calc-pax-value">18</output></label><input id="calc-pax" type="range" min="1" max="160" value="18"><label for="calc-hours">Часы с подачей <output id="calc-hours-value">4</output></label><input id="calc-hours" type="range" min="4" max="16" value="4"></div><div class="estimate-car"><img id="calc-image" src="../img/sprinter-grey.jpg" alt=""><div><span class="eyebrow" id="calc-kind">Подходит для вашей группы</span><h3 id="calc-model">Mercedes-Benz Sprinter</h3><p id="calc-formula"></p></div></div><div class="estimate-total"><span>Ориентировочно</span><strong id="calc-total">6 400 ₽</strong></div><button class="button button-red" id="calc-order" type="button">Обсудить эту поездку</button><p class="fineprint">Расчёт предварительный. Маршрут, подача за город и особые условия могут изменить стоимость. Минимальный заказ — 3 часа + 1 час подачи.</p></div></div>
+</section>
+
+<section class="cabin-editorial" id="cabin-editorial"><div class="cabin-scene"><img id="cabin-photo" src="../img/yutong-6128-salon-1.jpg" alt="Салон автобуса Yutong LSBUS" loading="lazy"><div class="cabin-type"><span>Внутри —</span><span>комфорт.</span></div><div class="cabin-caption"><span>Yutong 6128 / интерьер</span><p>Регулируемые кресла. Климат. Место для гида.<br> Оснащение каждой модели — в её карточке.</p></div></div></section>
+<section class="company-editorial wrap" id="o-kompanii"><span class="eyebrow">Логистик Систем / Санкт-Петербург</span><h2>За каждой поездкой —<br> <em>люди и ответственность.</em></h2><div class="company-grid"><p class="company-statement">Подаём чистый автобус<br> с водителем, который<br> знает ваш маршрут.</p><div class="company-notes"><div><h3>Лицензия и страхование</h3><p>Лицензия на пассажирские перевозки. Страхование пассажиров в РЕСО-Гарантия.</p></div><div><h3>На связи круглосуточно</h3><p>Обсудим маршрут, состав группы, время подачи и условия поездки.</p></div><div><h3>Для постоянных клиентов</h3><p>Для постоянных клиентов предусмотрены скидки на повторные заказы. Условия уточняйте у менеджера.</p></div></div></div><div class="company-facts"><div><b>10<small>+</small></b><span>лет на рынке</span></div><div><b>11<small>млн</small></b><span>перевезённых пассажиров</span></div><div><b>53<small>+ гид</small></b><span>места в автобусах Yutong</span></div><div><b>24<small>/7</small></b><span>приём заказов</span></div></div></section>
+<section class="fare-section wrap" id="tarify"><div class="editorial-heading"><span class="eyebrow">Открыто о стоимости</span><h2>Тарифы.<br> <em>По существу.</em></h2><p>Час работы с водителем.<br> Окончательный расчёт — по вашему маршруту.</p></div><div class="fare-table" id="fare-table"></div><div class="fare-footnote"><p>Детские экскурсии и бассейн — от 8 000 ₽ за поездку.<br> Междугородние перевозки — от 75 ₽/км. Условия уточняйте у менеджера.</p><button type="button" class="button button-red" data-order>Получить расчёт</button></div></section>
+<section class="partner-section wrap"><span class="eyebrow">С нами сотрудничают</span><div class="partner-logos" id="partner-logos"></div></section>
+<section class="contact-section wrap" id="kontakty"><div><span class="eyebrow">Давайте соберём вашу поездку</span><h2>Ваша следующая<br> <em>поездка — с LSBUS.</em></h2><a class="contact-phone" href="tel:+78123290329">+7 (812) 329-0-329</a><div class="contact-meta"><a href="https://wa.me/79959975080" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:info@lsbus.spb.ru">info@lsbus.spb.ru</a><span>Круглосуточно</span></div></div><div class="contact-action"><p>Уже знаете дату и маршрут?<br> Оставьте параметры поездки.</p><button class="button button-red" type="button" data-order>Рассчитать мой маршрут</button><small>Санкт-Петербург<br> Обводный канал, 93А, офис К-200</small></div></section>
+</main>
+<div id="site-footer"></div><div id="site-overlays"></div>
+</body></html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mercedes-Benz Sprinter Black с водителем — LSBUS</title>
+<meta name="theme-color" content="#ffffff">
+<link rel="preload" href="../fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="extra.css">
+<meta name="robots" content="noindex, nofollow, noarchive">
+</head>
+<body data-page="card">
+<main class="cp"><div class="wrap">
+  <nav class="crumbs" id="crumbs"></nav>
+  <div class="cg">
+    <div>
+      <div class="gm wipe" id="gm" data-cursor="Листать"><img id="g0" alt=""><img id="g1" alt="" class="out">
+        <div class="nv"><button id="gp" aria-label="Предыдущее фото"><svg class="ic" viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><span id="gn" class="num">1 / 4</span><button id="gx" aria-label="Следующее фото"><svg class="ic" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button></div>
+      </div>
+      <div class="th" id="th"></div>
+    </div>
+    <aside class="pnl">
+      <span class="lbl" id="grp"></span>
+      <h1 class="sl" id="ttl"></h1>
+      <div class="kv" id="kv"></div>
+      <div class="price"><b class="num" id="pr"></b><span>в час, от</span></div>
+      <div class="calc"><div><span class="lbl">Часов с подачей</span><div class="stp" style="margin-top:8px;gap:18px;justify-content:flex-start"><button id="hm" aria-label="Меньше">−</button><b id="hv" class="num">4</b><button id="hp" aria-label="Больше">+</button></div></div><div class="tot"><span class="lbl">Итого, ориентир.</span><b class="num" id="tot"></b></div></div>
+      <a class="btn" href="#" id="go" data-mag=".2">Забронировать <svg class="ic" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
+      <p class="note">Минимальный заказ — 3 часа + 1 час подачи. Точную стоимость подтвердит оператор после уточнения маршрута.</p>
+      <div class="call"><span class="muted">Заказ по телефону, круглосуточно</span><a href="tel:+78123290329">+7 (812) 329-0-329</a></div>
+    </aside>
+  </div>
+
+  <section class="cblk"><span class="lbl">Описание</span><p class="lead rv" id="lead"></p></section>
+  <section class="cblk" id="eqs"><span class="lbl">Оснащение</span><div class="eq rv" id="eq"></div></section>
+  <section class="cblk"><span class="lbl">Характеристики</span><div class="spt rv" id="spt"></div></section>
+  <section class="cblk"><span class="lbl">Подходит для</span><div class="fit rv" id="fit"></div></section>
+  <section class="cblk"><span class="lbl">Другие модели</span><div class="grid" id="sim"></div></section>
+</div></main>
+<script src="../data.js"></script>
+<script src="../vendor/gsap.min.js"></script>
+<script src="../vendor/ScrollTrigger.min.js"></script>
+<script src="../vendor/lenis.min.js"></script>
+<script src="shell.js"></script>
+<script>
+(function(){
+const L = LS, d = document, $ = id => d.getElementById(id);
+const id = new URLSearchParams(location.search).get('id') || 'sprinter-black';
+const c = L.fleet.find(x=>x.id===id) || L.fleet.find(x=>x.id==='sprinter-black');
+const grp = L.groups.find(g=>g.id===c.group);
+const TYPE = {bus:'Туристический автобус',mini:'Микроавтобус',car:'Легковой автомобиль'};
+d.title = `${c.name} с водителем — аренда в Санкт-Петербурге | LSBUS`;
+$('crumbs').innerHTML = `<a href="index.html">Главная</a><span>/</span><a href="index.html#park">Автопарк</a><span>/</span><span>${grp.name}</span>`;
+$('grp').textContent = TYPE[c.group]; $('ttl').innerHTML = c.name.split(' ').reduce((a,w)=>{const l=a[a.length-1]; if(l && (l+' '+w).length<16) a[a.length-1]=l+' '+w; else a.push(w); return a;},[]).map(t=>`<span class="ln"><span>${t}</span></span>`).join('');
+$('kv').innerHTML = [['Пассажирских мест', c.seats + (c.guide?' + гид':'')], ...(c.count?[['В автопарке', c.count]]:[]), ...c.specs.filter(s=>s[0]!=='Места')].map(([a,b])=>`<div><span>${a}</span><b style="font-weight:400">${b}</b></div>`).join('');
+$('pr').textContent = rub(c.price);
+
+/* gallery: crossfade */
+let gi = 0, front = $('g0'), back = $('g1');
+front.src = imgp(c.photos[0]); front.alt = c.name;
+$('th').innerHTML = c.photos.map((p,i)=>`<button data-i="${i}" class="${i?'':'on'}" aria-label="Фото ${i+1}"><img src="${imgp(p)}" alt="" loading="lazy"></button>`).join('');
+function go(i){ i = (i + c.photos.length) % c.photos.length; if (i === gi) return; gi = i;
+  back.src = imgp(c.photos[i]); back.alt = `${c.name} — фото ${i+1}`;
+  const swap = () => { back.classList.remove('out'); front.classList.add('out'); [front, back] = [back, front]; };
+  back.complete ? swap() : back.onload = swap;
+  $('gn').textContent = `${i+1} / ${c.photos.length}`;
+  $('th').querySelectorAll('button').forEach((b,k)=>b.classList.toggle('on',k===i)); }
+$('gn').textContent = `1 / ${c.photos.length}`;
+$('gp').onclick = () => go(gi-1); $('gx').onclick = () => go(gi+1);
+$('th').onclick = e => { const b = e.target.closest('button'); b && go(+b.dataset.i); };
+addEventListener('keydown', e => { if (e.key==='ArrowLeft') go(gi-1); if (e.key==='ArrowRight') go(gi+1); });
+let sx = null; $('gm').addEventListener('touchstart', e => sx = e.touches[0].clientX, {passive:true});
+$('gm').addEventListener('touchend', e => { if (sx===null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(gi + (dx<0?1:-1)); sx = null; });
+if (c.photos.length < 2) { d.querySelector('.gm .nv').style.display='none'; $('th').style.display='none'; }
+
+/* booking */
+let h = 4; const upd = () => { $('hv').textContent = h; odo($('tot'), (c.price*h).toLocaleString('ru-RU').replace(/\u00a0|,/g,' ') + ' ₽'); };
+$('hm').onclick = () => { h = Math.max(4,h-1); upd(); }; $('hp').onclick = () => { h = Math.min(14,h+1); upd(); }; upd();
+$('go').onclick = e => { e.preventDefault(); openOrder(c.id); };
+const mo = d.querySelector('.mbar .o'); if (mo) { mo.dataset.order = c.id; mo.textContent = 'Забронировать'; }
+
+/* body */
+$('lead').textContent = c.text;
+if (c.amen.length) $('eq').innerHTML = c.amen.map(a=>`<div>${ic(a,28)}<span>${L.amen[a]}</span></div>`).join(''); else $('eqs').remove();
+$('spt').innerHTML = [['Тип', TYPE[c.group]], ...c.specs, ['Стоимость часа', 'от '+rub(c.price)], ['Минимальный заказ','3 часа + 1 час подачи']].map(([a,b])=>`<div><span>${a}</span><span style="color:var(--k)">${b}</span></div>`).join('');
+const fits = {bus:['tour','kids','intercity','staff','transfer'], mini:['wedding','transfer','staff','kids','tour'], car:['transfer','wedding']}[c.group];
+$('fit').innerHTML = fits.map(f=>L.services.find(s=>s.id===f)).map(s=>`<a href="index.html#uslugi">${s.name}</a>`).join('');
+const sim = L.fleet.filter(x=>x.id!==c.id && x.group===c.group).concat(L.fleet.filter(x=>x.group!==c.group)).slice(0,3);
+$('sim').innerHTML = sim.map(s=>`<a class="car rv" href="kartochka.html?id=${s.id}"><div class="ph"><img src="${imgp(s.photos[0])}" alt="${s.name}" loading="lazy"></div>
+  <div class="bd"><h3>${s.name}</h3><span class="pr">от ${rub(s.price)} <small>/ час</small></span><div class="sp"><span>${s.seats} мест</span></div></div></a>`).join('');
+LSApp.ready();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+/* Данные взяты с lsbus.spb.ru (13.11.2026): автопарк, тарифы, услуги. Расхождения сайта отмечены в Клиенты/LSBUS-встреча-2026-11.md */
+window.LS = {
+  phone: '+7 (812) 329-0-329', phoneHref: 'tel:+78123290329',
+  mobile: '+7 (995) 997-50-80', wa: 'https://wa.me/79959975080',
+  email: 'info@lsbus.spb.ru',
+  address: 'наб. Обводного канала, 93А, офис К-200',
+  groups: [
+    { id: 'bus', name: 'Автобусы', hint: 'до 53 мест' },
+    { id: 'mini', name: 'Микроавтобусы', hint: '19–20 мест' },
+    { id: 'car', name: 'Минивэны и седаны', hint: 'до 7 мест' }
+  ],
+  fleet: [
+    { id: 'yutong-6128', group: 'bus', name: 'Yutong 6128', brand: 'YUTONG', seats: 53, guide: true, price: 2900, count: 37,
+      tag: 'Новый · 2023', amen: ['ac','water','fridge','mic','guide','wifi','usb','tv'],
+      photos: ['yutong-6128-1','yutong-6128-2','yutong-6128-salon-1','yutong-6128-salon-2','yutong-6128-bagazh'],
+      specs: [['Длина','12 м'],['Год выпуска','2023'],['Багажное отделение','11 м³'],['Места','51–53 + гид']],
+      text: 'Туристический автобус длиной 12 метров 2023 года выпуска. В парке используются Yutong не старше 4 лет. Кресла регулируются в трёх плоскостях, климатическая установка с очисткой воздуха, USB, TV, холодильник и кулер с питьевой водой. Багажное отделение 11 м³ вмещает вещи всей группы.' },
+    { id: 'yutong-6122h9', group: 'bus', name: 'Yutong 6122H9', brand: 'YUTONG', seats: 53, guide: true, price: 2900, count: 52,
+      tag: 'Место для гида', amen: ['ac','water','fridge','mic','guide','wifi'],
+      photos: ['yutong-6122-1','yutong-6122-2','yutong-6122-salon-1','yutong-6122-salon-2','yutong-6122-bagazh-1','yutong-6122-bagazh-2'],
+      specs: [['Места','53 + гид'],['Багаж','отдельное отделение']],
+      text: 'Туристический автобус большой вместимости для экскурсий, корпоративных выездов и междугородних поездок. Кондиционер, кулер с водой, холодильник, микрофон и отдельное место для гида.' },
+    { id: 'zhong-tong', group: 'bus', name: 'Zhong Tong', brand: 'ZHONG TONG', seats: 53, price: 2900,
+      tag: 'Премиум-салон', amen: ['ac','mic','wifi'], photos: ['zhongtong'],
+      specs: [['Места','53']],
+      text: 'Комфортный салон премиум-класса. Подходит для туристических поездок, корпоративного обслуживания и детских перевозок.' },
+    { id: 'sprinter-black', group: 'mini', name: 'Mercedes-Benz Sprinter Black', brand: 'MERCEDES-BENZ', seats: 19, price: 1800,
+      tag: 'Чёрный · на свадьбу', amen: ['ac','mic','tv','wifi'],
+      photos: ['sprinter-black-1','sprinter-black-salon-1','sprinter-black-2','sprinter-black-salon-2'],
+      specs: [['Места','19'],['Цвет','чёрный'],['Салон','комфортные кресла, телевизор']],
+      text: 'Современный и надёжный микроавтобус в чёрном цвете. Комфортабельные сиденья и телевизор в салоне. Подготовлен для перевозки детей и школьников. Подходит на свадьбу, экскурсию, корпоративную поездку и служебную развозку сотрудников.' },
+    { id: 'sprinter-tourist', group: 'mini', name: 'Mercedes-Benz Sprinter Tourist', brand: 'MERCEDES-BENZ', seats: 19, price: 1800,
+      tag: 'Кожаный салон', amen: ['leather','ac','mic','tv','wifi'],
+      photos: ['sprinter-tourist-1','sprinter-tourist-salon-1','sprinter-tourist-2','sprinter-tourist-salon-2','sprinter-tourist-3'],
+      specs: [['Места','19'],['Салон','кожаный']],
+      text: 'Туристический Sprinter с кожаным салоном, кондиционером, микрофоном и телевизором.' },
+    { id: 'sprinter', group: 'mini', name: 'Mercedes-Benz Sprinter', brand: 'MERCEDES-BENZ', seats: 19, price: 1600, count: 10,
+      amen: ['ac','wifi'], photos: ['sprinter-grey'], specs: [['Места','19']],
+      text: 'Пассажирский Sprinter на 19 мест для трансферов и служебной развозки.' },
+    { id: 'sprinter-shuttle', group: 'mini', name: 'Sprinter Шатл-Бокс', brand: 'MERCEDES-BENZ', seats: 19, price: 1800, count: 3,
+      amen: ['ac','mic','wifi'], photos: ['sprinter-shuttle'], specs: [['Места','19']],
+      text: 'Sprinter с кондиционером и микрофоном.' },
+    { id: 'sprinter-leather', group: 'mini', name: 'Mercedes-Benz Sprinter', brand: 'MERCEDES-BENZ', seats: 19, price: 1800,
+      amen: ['leather','ac','mic','wifi'], photos: ['sprinter-white'], specs: [['Места','19'],['Салон','кожаный']],
+      text: 'Sprinter с кожаным салоном, кондиционером и микрофоном.' },
+    { id: 'sprinter-classic', group: 'mini', name: 'Sprinter Classic', brand: 'MERCEDES-BENZ', seats: 20, price: 1600, count: 8,
+      amen: ['ac','wifi'], photos: ['sprinter-classic'], specs: [['Места','20']],
+      text: 'Вместительный Sprinter Classic на 20 мест.' },
+    { id: 'camry', group: 'car', name: 'Toyota Camry', brand: 'TOYOTA', seats: 5, price: 1500,
+      amen: [], photos: ['camry'], specs: [['Места','5']],
+      text: 'Седан бизнес-класса для встреч, деловых поездок и трансферов.' },
+    { id: 'vito', group: 'car', name: 'Mercedes-Benz Vito', brand: 'MERCEDES-BENZ', seats: 7, price: 1800,
+      amen: [], photos: ['vito'], specs: [['Места','7']],
+      text: 'Минивэн на 7 мест для небольшой группы с багажом.' }
+  ],
+  services: [
+    { id: 'tour', name: 'Туристическим группам', price: 'от 1 800 ₽/ч', img: 'yutong-6122-1', text: 'Экскурсии по городу, пригородам и России. Место для гида и микрофон.' },
+    { id: 'staff', name: 'Служебная развозка', price: 'от 1 800 ₽ за рейс', img: 'sprinter-classic', text: 'Доставка сотрудников до объектов и обратно, в том числе ночью.' },
+    { id: 'transfer', name: 'Трансферы', price: 'от 1 800 ₽/ч', img: 'sprinter-tourist-1', text: 'Аэропорт, вокзал, выставки и конференции. Встреча делегаций.' },
+    { id: 'kids', name: 'Перевозка детей', price: 'от 1 800 ₽/ч', img: 'yutong-6122-salon-1', text: 'Лагеря, экскурсии и бассейн. Транспорт подготовлен для детских групп.' },
+    { id: 'wedding', name: 'Свадьбы и торжества', price: 'от 1 900 ₽/ч', img: 'sprinter-black-1', text: 'Чёрный Sprinter и автобусы для гостей.' },
+    { id: 'intercity', name: 'Междугородние поездки', price: 'от 75 ₽/км', img: 'zhongtong', text: 'По Ленинградской области и городам России.' }
+  ],
+  amen: {
+    ac: 'Кондиционер', water: 'Кулер с водой', fridge: 'Холодильник', mic: 'Микрофон', guide: 'Место для гида',
+    wifi: 'Wi‑Fi', usb: 'USB', tv: 'Телевизор', leather: 'Кожаный салон'
+  }
+};
