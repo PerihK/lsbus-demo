@@ -10,7 +10,7 @@
 <link rel="preload" href="../fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../img/most.jpg" as="image">
 <link rel="stylesheet" href="base.css">
-<link rel="stylesheet" href="extra.css?v=20261117">
+<link rel="stylesheet" href="extra.css?v=20261118">
 <meta name="robots" content="noindex, nofollow, noarchive">
 </head>
 <body data-page="home">
@@ -65,8 +65,8 @@
     </div>
   </div>
   <div class="sr-m sec">
-    <div class="wrap"><div class="shd"><span class="lbl">01 — Автопарк</span><div class="row"><h2 class="h-l">Одиннадцать моделей</h2><p>Прокручивайте — модели проедут мимо.</p></div></div></div>
-    <div class="rail" id="srm"></div>
+    <div class="wrap"><div class="shd"><span class="lbl">01 — Автопарк</span><div class="row"><h2 class="h-l">Одиннадцать моделей</h2><p>Листайте карточки вбок, чтобы посмотреть модели.</p></div></div></div>
+    <div class="rail" id="srm" tabindex="0" aria-label="Модели автопарка"></div>
   </div>
 </section>
 
@@ -264,16 +264,11 @@ LSApp.ready(() => {
       .fromTo('#zcap',{opacity:0,y:40},{opacity:1,y:0,duration:.2},.75)
       .to({}, {duration:.1}); };
   buildZoom(); let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { buildZoom(); ST.refresh(); }, 250); });
-  /* photo chips grow inside the sentence */
-  G.fromTo('.stmt .ip',{width:0,marginLeft:0,marginRight:0},{width:'2.1em',marginLeft:'.24em',marginRight:'.04em',ease:'power2.out',stagger:.2,
+  /* Keep line breaks stable before measuring scroll positions. */
+  G.fromTo('.stmt .ip', {opacity:0, scale:.78}, {opacity:1, scale:1, ease:'power2.out', stagger:.12,
     scrollTrigger:{trigger:'.stmt p',start:'top 80%',end:'bottom 50%',scrub:1}});
   /* closing wordmark */
   G.fromTo('#wm i',{yPercent:110},{yPercent:0,y:0,ease:'expo.out',duration:1.6,stagger:.09,scrollTrigger:{trigger:'#wm',start:'top 85%'}});
-  /* showroom rail pinned (tablet/phone) */
-  mm.add('(max-width:1100px)', () => { const rail = $('srm'); rail.classList.add('pin');
-    const dist = () => rail.scrollWidth - innerWidth;
-    const tw = G.to(rail,{x:() => -dist(),ease:'none',scrollTrigger:{trigger:'.sr-m',start:'top top',end:() => '+=' + dist(),pin:true,scrub:1,invalidateOnRefresh:true}});
-    return () => { rail.classList.remove('pin'); }; });
   /* showroom pin (desktop) */
   mm.add('(min-width:1101px)', () => {
     const st = ST.create({trigger:'#stage',start:'top top',end:'+='+(N*55)+'%',pin:true,scrub:true,

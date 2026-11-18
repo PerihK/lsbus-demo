@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#f3f0ea">
 <link rel="preload" href="../fonts/inter-tight-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../fonts/cormorant-garamond-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=20261117">
+<link rel="stylesheet" href="style.css?v=20261118">
 <meta name="robots" content="noindex, nofollow, noarchive">
 </head>
 <body data-page="home">
@@ -147,7 +147,6 @@
 <script>
 (function(){
 const L = LS, G = window.gsap, ST = window.ScrollTrigger, d = document;
-const desk = matchMedia('(min-width:721px)').matches;
 const nm = n => { const p = n.replace(/^Mercedes-Benz /,'').split(' '); const last = p.pop(); return (p.length ? p.join(' ')+' ' : '') + `<span class="serif">${last}</span>`; };
 
 /* fleet track */
@@ -220,11 +219,14 @@ LSApp.ready(() => {
   G.to('.hero h1',{yPercent:-12,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
 
   /* fleet horizontal */
-  if (desk) {
-    const dist = () => tr.scrollWidth - innerWidth;
-    G.to(tr,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:'.fleet .pin',start:'center center',end:()=>'+='+dist(),pin:true,scrub:1,invalidateOnRefresh:true,
-      onUpdate:s=>d.querySelector('.fleet .prog i').style.transform=`scaleX(${s.progress})`}});
-  }
+  G.matchMedia().add('(min-width:901px)', () => {
+    const distance = () => tr.scrollWidth - innerWidth;
+    G.to(tr, {x: () => -distance(), ease:'none', scrollTrigger:{
+      trigger:'.fleet .pin', start:'center center', end:() => '+=' + distance(),
+      pin:true, scrub:1, invalidateOnRefresh:true,
+      onUpdate:s => d.querySelector('.fleet .prog i').style.transform = `scaleX(${s.progress})`
+    }});
+  });
   G.from('#track .fc',{y:80,autoAlpha:0,duration:1.4,ease:'expo.out',stagger:.08,scrollTrigger:{trigger:'#track',start:'top 85%'}});
 
   /* services rows */

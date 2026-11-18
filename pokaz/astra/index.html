@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru" data-pages-demo>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171f20"><meta name="description" content="Автобусы и микроавтобусы с водителем в Санкт-Петербурге. Посмотрите автопарк LSBUS и подберите транспорт по числу пассажиров.">
+<title>Линии Петербурга — LSBUS, Санкт-Петербург</title>
+<link rel="icon" href="media/vehicles/logo.png"><link rel="preload" href="media/oswald-semibold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="site.css"><link rel="stylesheet" href="atlas.css"><link rel="stylesheet" href="showroom.css">
+<script defer src="shared/data.js"></script><script defer src="shared/calculator.js"></script><script defer src="common.js"></script><script defer src="booking.js"></script><script defer src="site.js"></script><script defer src="directions.js"></script><script defer src="journeys.js"></script>
+<meta name="robots" content="noindex,nofollow,noarchive"></head>
+<body>
+<a class="skip" href="#journey">К подбору поездки</a>
+<header id="top" class="opening">
+<nav class="mast" aria-label="Основная навигация">
+<a class="brand" href="#top" aria-label="LSBUS — начало"><b>LS</b><span>bus</span></a>
+<div class="navlinks"><a href="journeys.html">Поездки</a><a href="fleet.html">Автопарк</a><a href="company.html">Компания</a><a href="#estimate">Расчёт</a></div>
+<a class="mastphone" href="tel:+78123290329">+7 (812) 329-0-329</a>
+<button class="menu-open" aria-label="Открыть меню" aria-controls="navigation"><i></i><i></i></button>
+</nav>
+<div class="projection"><section class="screen" aria-labelledby="film-title">
+<picture class="backdrop"><source class="portrait" media="(max-aspect-ratio: 2/3)" srcset="media/square-portrait.jpg"><source class="tablet" media="(max-aspect-ratio: 4/3)" srcset="media/square-tablet.jpg"><img src="media/square.jpg" alt="" fetchpriority="high"></picture>
+<div class="film-layers" aria-hidden="true"><video muted playsinline preload="none"></video><video muted playsinline preload="none"></video></div><div class="shade"></div>
+<div class="film-caption"><p>Санкт-Петербург и область</p><h1 id="film-title">Автобусы с водителем</h1></div>
+<div class="screen-foot"><button class="play-film" type="button"><i aria-hidden="true"></i> Смотреть фильм <small>1:26</small></button>
+<div class="shot-controls" aria-label="Кадры фильма"><div class="shots">
+<button type="button" data-shot="0" aria-label="Кадр 1. Петербург" aria-pressed="true"><span>Петербург</span></button>
+<button type="button" data-shot="1" aria-label="Кадр 2. Исаакиевская площадь" aria-pressed="false"><span>Площадь</span></button>
+<button type="button" data-shot="2" aria-label="Кадр 3. Дорога" aria-pressed="false"><span>Дорога</span></button>
+</div><button class="pause" aria-label="Приостановить видео" type="button"><span aria-hidden="true">Ⅱ</span></button></div></div>
+</section>
+<form id="journey" class="journey" aria-label="Рассчитать поездку">
+<div class="route-stops"><label><span><i class="point"></i> Откуда</span><input name="pickup" placeholder="Место подачи" maxlength="300" autocomplete="off"></label>
+<label><span><i class="point end"></i> Куда</span><input name="dropoff" placeholder="Место прибытия" maxlength="300" autocomplete="off"></label></div>
+<div class="pass-facts"><label><span>Дата поездки</span><span class="date-control"><input type="date" name="date" aria-label="Дата поездки"><span class="date-display" aria-hidden="true">Выбрать</span></span></label><label><span>Пассажиры</span><input type="number" name="passengers" value="19" min="1" max="500" required inputmode="numeric"></label></div>
+<button class="primary" type="submit">Рассчитать поездку</button></form></div>
+</header>
+<main>
+<section id="fleet" class="motor-show" aria-labelledby="motor-title">
+<div class="motor-deck"><div class="motor-copy"><p class="section-key">Автопарк LSBUS</p><h2 id="motor-title">Выберите <br>транспорт.</h2>
+<div class="class-selector" role="group" aria-label="Класс транспорта"><button type="button" data-class="bus" aria-pressed="true">Автобусы</button><button type="button" data-class="mini" aria-pressed="false">Микроавтобусы</button><button type="button" data-class="car" aria-pressed="false">Автомобили</button></div></div>
+<figure class="motor-scene" data-current="bus"><img id="group-photo" loading="lazy" src="media/collection/riverside.webp" alt="Автобус LSBUS на Дворцовой площади"><figcaption><span id="group-name">Туристические автобусы</span><span>до <b id="seat-limit">53</b> мест</span></figcaption></figure></div>
+<div class="motor-models"><div class="models-head"><h3 id="models-heading">Модели автобусов</h3><div class="model-links"><button class="catalog-link" type="button" id="see-interior">Салоны</button><a class="catalog-link" href="fleet.html">Весь автопарк</a></div></div><div id="model-list" class="model-grid" aria-labelledby="models-heading"></div></div></section>
+<section id="inside" class="window-story" aria-label="В пути с LSBUS"><div class="interlude">
+<div class="interior-wall"><img src="media/journey-boarding.jpg" alt="Микроавтобус подъезжает ко входу в петербургский отель" loading="lazy"><img class="story-layer" src="media/journey-avenue.jpg" loading="lazy" alt="Петербургский проспект через лобовое стекло автобуса"><img class="story-layer" src="media/journey-overhead.jpg" loading="lazy" alt="Автобус на загородной трассе, вид с воздуха"></div>
+<div class="interior-note"><p class="eyebrow">Поездка с LSBUS</p><h2 id="inside-title">У места подачи</h2><p id="inside-caption">В заявке можно указать отель, вокзал или точный адрес встречи.</p></div>
+<div class="story-dial" role="group" aria-label="Эпизод поездки"><button type="button" aria-pressed="true">Посадка</button><button type="button" aria-pressed="false">Город</button><button type="button" aria-pressed="false">Трасса</button></div></div></section>
+<section class="route-films" id="routes" aria-labelledby="route-title"><div class="section-titlebar"><div><p class="section-key">Услуги LSBUS</p><h2 id="route-title">Для вашей поездки</h2></div><a href="journeys.html" class="catalog-link">Все направления</a></div><div class="route-reel"></div></section>
+
+<section id="estimate" class="estimate block"><div class="mastline"><span>Расчёт поездки</span><span>LSBUS</span></div>
+<div class="estimate-grid"><div><h2>Сколько<br><em>вас едет?</em></h2><p class="calc-intro">Подберём транспорт для всей группы. Если одного автобуса мало, посчитаем несколько.</p>
+<label class="selectlabel">Повод поездки <select id="purpose"></select></label>
+<div class="rangehead"><label for="pax">Пассажиры</label><input aria-label="Число пассажиров" type="number" id="pax-number" value="19" min="1" max="500" inputmode="numeric"></div>
+<input type="range" id="pax" min="1" max="500" value="19"><div class="range-ends"><span>1 человек</span><span>500 человек</span></div>
+<div class="duration"><label for="hours">Часы с подачей</label><select id="hours"></select></div></div>
+<article class="ticket"><div class="quote-photo"><img id="quote-photo" src="media/vehicles/sprinter-tourist-1.jpg" alt="Mercedes-Benz Sprinter Tourist" loading="lazy"><a id="quote-link" href="vehicle-sprinter-tourist.html">О модели</a></div><div class="ticket-body" aria-live="polite"><p class="quote-key">Предварительный расчёт</p><p id="ticket-model"></p><div id="composition"></div><p id="ticket-cost"></p><small id="ticket-unit"></small></div><div class="ticket-foot"><button class="primary" data-book type="button">Оформить заявку</button></div></article></div></section>
+<section class="dispatch-scene" aria-labelledby="dispatch-title"><img src="media/collection/team.webp" alt="Сотрудник LSBUS перед машинами автопарка" loading="lazy"><div><p class="section-key">Компания LSBUS</p><h2 id="dispatch-title">Люди за рулём.</h2><p>Маршрут с несколькими точками подачи, ожиданием или обратным рейсом можно обсудить с диспетчером.</p><a class="catalog-link" href="company.html">Компания и контакты</a></div></section>
+</main>
+<footer class="footer block" id="contacts"><div class="mastline"><span>Диспетчерская LSBUS</span><span>Контакты</span></div><div class="foot-grid"><div><h2>На связи<span>.</span></h2><a class="foot-phone" href="tel:+78123290329">+7 (812) 329-0-329</a><a href="mailto:info@lsbus.spb.ru">info@lsbus.spb.ru</a></div><address>Санкт-Петербург<br>наб. Обводного канала, 93А<br>офис К-200</address></div></footer>
+<dialog id="navigation" class="nav-dialog"><div class="dialog-bar"><span>Меню</span><button class="dismiss" type="button" aria-label="Закрыть меню">×</button></div><nav><a href="#journey">Ваша поездка</a><a href="journeys.html">Поездки</a><a href="fleet.html">Автопарк</a><a href="company.html">Компания</a><a href="#estimate">Расчёт</a><a href="#contacts">Контакты</a></nav><a href="tel:+78123290329">+7 (812) 329-0-329</a></dialog>
+<dialog id="film-dialog" class="film-dialog"><div class="dialog-bar"><span>Фильм LSBUS</span><div class="film-tools"><button type="button" class="expand">Во весь экран</button><button type="button" class="dismiss" aria-label="Закрыть фильм">×</button></div></div><video playsinline controls preload="none" poster="media/square.jpg" aria-label="Фильм о поездках LSBUS"></video></dialog>
+<dialog id="gallery" class="gallery-dialog"><div class="dialog-bar"><span id="gallery-head">Салоны LSBUS</span><button type="button" class="dismiss" aria-label="Закрыть просмотр">×</button></div><div class="gallery-body"><div class="gallery-image"><img alt="" id="detail-img"><div class="gallery-steps"><button type="button" id="prev" aria-label="Предыдущее фото">‹</button><span id="photo-count"></span><button type="button" id="next" aria-label="Следующее фото">›</button></div></div><div class="detail-copy"><h2 id="detail-title">Внутри транспорта</h2><p>Салоны и багажные отделения машин из парка. Оснащение зависит от выбранной модели.</p><button type="button" class="primary" id="detail-book">Подобрать транспорт</button></div></div></dialog>
+<dialog id="booking" class="booking"><div class="dialog-bar"><span>Ваша поездка</span><button type="button" class="dismiss" aria-label="Закрыть заявку">×</button></div>
+<div class="sheet-inner"><h2>Заявка<span>.</span></h2><form id="request"><div class="fields">
+<label>Откуда<input name="pickup" type="text" required minlength="3" maxlength="300" placeholder="Адрес подачи"></label><label>Куда<input name="dropoff" type="text" required minlength="3" maxlength="300" placeholder="Адрес или маршрут"></label>
+<label>Дата поездки<input name="date" required type="date"></label><label>Время подачи<input name="time" required type="time"></label>
+<label>Пассажиры<input name="passengers" required type="number" min="1" max="500" inputmode="numeric"></label><label>Часы с подачей<select name="hours"></select></label>
+<label class="wide">Повод поездки<select name="occasion"></select></label></div>
+<div class="booking-est"><b id="booking-model"></b><span id="booking-cost"></span><button type="button" id="auto-model" hidden>Подобрать автоматически</button></div>
+<div class="fields"><label>Имя<input name="name" required minlength="2" maxlength="80" autocomplete="name"></label><label>Телефон<input name="phone" type="tel" required maxlength="24" autocomplete="tel" placeholder="+7 …"></label>
+<label class="wide">Пожелания <small>(по желанию)</small><textarea name="comment" rows="2" maxlength="1200"></textarea></label></div>
+<label class="consent"><input type="checkbox" name="consent" required> Согласен на обработку данных заявки.</label><p class="local-note">Демонстрационная форма. Заявка сохранится локально.</p>
+<button class="primary" type="submit">Сохранить заявку</button><p class="error" role="alert"></p></form>
+<div id="receipt" hidden role="status"><p>Тестовая заявка сохранена.</p><strong></strong><button type="button" class="under">Готово</button></div></div></dialog>
+</body></html>

@@ -16,3 +16,9 @@
 
 .trip-section{display:grid}
 @media(max-width:700px){.product-summary{grid-template-columns:1fr 1fr}.summary-item:nth-child(2){display:none}.summary-item:last-child{padding-left:22px}.summary-item:first-child{border-right:1px solid var(--line)}}
+
+@media (max-width:700px) {
+  .service-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .service-item { min-width: 0; }
+  .service-item > span:nth-child(2) { min-width: 0; overflow-wrap: anywhere; }
+}
