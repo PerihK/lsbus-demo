@@ -99,3 +99,29 @@ dialog{border:0;padding:0;max-width:calc(100vw - 30px);max-height:calc(100svh - 
 /* Thumbnail rails scroll inside the vehicle gallery, including on narrow screens. */
 .transport-gallery, .transport-info { min-width: 0; }
 .transport-gallery .gallery-dots { max-width: 100%; }
+
+/* Keep the centre clear for the film. The title sits below the masthead. */
+.hero-title-wrap {
+  left: auto;
+  right: var(--pad);
+  top: clamp(116px, 17svh, 170px);
+  max-width: calc(100% - 2 * var(--pad));
+  text-align: right;
+  transform: none;
+}
+.hero-title-wrap .hero-eyebrow { margin: 0 0 12px; }
+.hero h1 { line-height: .9; text-shadow: 0 2px 18px #101314a8; }
+.hero h1 > .title-line { font-size: clamp(58px, 6.3vw, 118px); }
+.hero h1 > em.title-line { font-size: clamp(36px, 4.1vw, 76px); }
+.hero-shade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 100% 5%, #10131496 0%, #10131445 22%, transparent 53%);
+}
+@media (max-width: 600px) {
+  .hero-title-wrap { top: clamp(91px, 13svh, 115px); right: var(--pad); }
+  .hero-title-wrap .hero-eyebrow { font-size: 7px; margin-bottom: 8px; }
+  .hero h1 > .title-line { font-size: clamp(45px, 11vw, 66px); }
+  .hero h1 > em.title-line { font-size: clamp(31px, 7.5vw, 45px); }
+}

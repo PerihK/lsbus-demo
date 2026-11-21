@@ -1,13 +1,15 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const L=window.LS,esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const L=window.LS,fleet=window.LSCinemaFleet,esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const rub=n=>Math.round(n).toLocaleString('ru-RU')+' ₽';
+const photoUrl=src=>src.startsWith('assets/')?src:'../img/'+src+'.jpg';
+const carCapacity=car=>car.seats===null?'Места уточнит диспетчер':car.seats+' мест'+(car.guide?' + гид':'');
 const home=document.body.dataset.page==='home',anchor=id=>(home?'':'index.html')+'#'+id;
 const plural=(n,forms)=>forms[n%100>=11&&n%100<=14?2:n%10===1?0:n%10>=2&&n%10<=4?1:2];
 const state={passengers:18,occasion:'tour',hours:4,service:'По часам',pickup:'',dropoff:'',date:'',time:'',end_time:'',end_place:'',carId:null};
 const OCC=[['tour','Экскурсия'],['transfer','Трансфер'],['wedding','Свадьба'],['staff','Развозка'],['kids','Дети'],['intercity','Межгород']];
-const trip=()=>window.LSCalculator.calculateTrip({fleet:L.fleet,...state});
-const currentCar=()=>state.carId?L.fleet.find(c=>c.id===state.carId):trip().car;
+const trip=()=>window.LSCalculator.calculateTrip({fleet,...state});
+const currentCar=()=>state.carId?fleet.find(c=>c.id===state.carId):trip().car;
 let csrf='',deliveryMode='preview',tokenPromise=null,submissionId='',lastFocus=null;
 document.querySelector('[data-header]').innerHTML=`<header class="site-header" id="site-header"><div class="shell"><div class="header-menu"><button class="menu-toggle" aria-label="Меню" aria-expanded="false" aria-controls="mobile-nav"><span>Меню</span><i></i><i></i></button></div><a class="brand" href="index.html" aria-label="LSBUS — главная"><span class="brand-mark" aria-hidden="true"><b>LS</b>bus</span></a><div class="header-contact"><a class="header-phone" href="${L.phoneHref}">${esc(L.phone)}</a><button class="button" data-book>Заказать поездку</button></div></div></header><nav class="mobile-nav" id="mobile-nav" aria-label="Меню разделов" hidden><div class="nav-links"><a href="${anchor('trip')}"><small>01</small>Ваша поездка</a><a href="${anchor('fleet')}"><small>02</small>Автопарк</a><a href="${anchor('people')}"><small>03</small>Подбор состава</a><a href="${anchor('services')}"><small>04</small>Маршруты</a><a href="${anchor('contacts')}"><small>05</small>Контакты</a></div><div class="nav-aside"><img src="assets/palace-sm.webp" alt="Транспорт LSBUS на Дворцовой площади"><a href="${L.phoneHref}">${esc(L.phone)}</a><p>Пассажирские перевозки / Санкт-Петербург<br>На связи круглосуточно</p></div></nav>`;
 document.querySelector('[data-footer]').innerHTML=`<footer class="site-footer" id="contacts"><div class="footer-top"><div class="footer-company"><a class="footer-brand" href="index.html"><b>LS</b>bus</a><p>ООО «Логистик Систем»<br>Автобусы и микроавтобусы с водителем.<br>Санкт-Петербург и Ленинградская область.</p></div><div class="footer-navigation"><h3>Продолжить знакомство</h3><nav><a href="fleet.html">Автопарк</a><a href="${anchor('services')}">Маршруты</a><a href="${anchor('people')}">Подбор состава</a><a href="${anchor('inside')}">Внутри салона</a></nav></div><div class="footer-contact"><h3>На связи круглосуточно</h3><a href="${L.phoneHref}">${esc(L.phone)}</a><br><a href="mailto:${L.email}">${esc(L.email)}</a><p style="margin-top:12px">${esc(L.address)}</p></div></div><div class="footer-bottom"><span>© ${new Date().getFullYear()} ООО «Логистик Систем»</span><button class="text-button" data-privacy>О данных формы</button><span>Фотографии и фильм LSBUS / Концепция KIRIW</span></div></footer><div class="mobile-cta"><a href="${L.phoneHref}">Позвонить</a><button class="button dark" data-book>Спланировать поездку</button></div>`;
@@ -37,11 +39,20 @@ function getToken(){
   tokenPromise=fetch('api/request.php',{credentials:'same-origin',cache:'no-store'}).then(async r=>{if(!r.ok)throw Error('API');const d=await r.json();if(!d.csrf)throw Error('API');csrf=d.csrf;deliveryMode=d.mode||'preview';$('#delivery-note').textContent=deliveryMode==='preview'?'Демонстрационная версия: заявка сохраняется только для проверки формы и не отправляется менеджеру.':'Заявку получит менеджер LSBUS. После отправки мы свяжемся с вами.';return d;}).catch(()=>{tokenPromise=null;throw Error('В этой копии приём заявок не подключён. Для поездки позвоните по номеру в шапке сайта.');});return tokenPromise;
 }
 function syncBooking(){
-  const t=trip(),car=currentCar();$('#booking-preview').innerHTML=`<b>${state.carId?esc(car.name):esc(t.count>1?t.count+' × '+t.car.name:t.car.name)}</b><br>${state.passengers} пассажиров · ${state.carId?car.seats:t.capacity} мест ${state.carId?'в машине':'всего'}${state.passengers>(state.carId?car.seats:t.capacity)?'<br>Для группы потребуется дополнительный транспорт.':''}<br><span>Предварительный подбор. Наличие на дату подтвердит менеджер.</span>`;
+  const t=trip(),car=currentCar();
+  const capacity=state.carId?car.seats:t.capacity;
+  const passengerField=bookingForm.elements.passengers;
+  const passengerCount=passengerField.validity.valid?passengerField.valueAsNumber:null;
+  const seats=capacity===null?'Вместимость уточнит диспетчер':capacity+' мест '+(state.carId?'в машине':'всего');
+  const passengers=passengerCount===null?'':passengerCount+' '+plural(passengerCount,['пассажир','пассажира','пассажиров'])+' · ';
+  const extra=capacity!==null&&passengerCount>capacity?'<br>Для группы потребуется дополнительный транспорт.':'';
+  const name=state.carId||t.count===1?car.name:t.count+' × '+t.car.name;
+  $('#booking-preview').innerHTML=`<b>${esc(name)}</b><br>${passengers}${seats}${extra}<br><span>Предварительный подбор. Наличие на дату подтвердит менеджер.</span>`;
 }
 function openBooking(carId=null){
   state.carId=carId;$$('#quick-book input').forEach(f=>{if(f.name&&f.name!=='passengers')state[f.name]=f.value;});
   for(const [key,val]of Object.entries(state)){const f=bookingForm.elements.namedItem(key);if(f)f.value=val;}
+  if(carId&&currentCar().seats===null) bookingForm.elements.passengers.value='';
   $('#form-status').hidden=true;submissionId=crypto.randomUUID().replace(/-/g,'');syncBooking();openDialog(booking);if(!publicDemo)getToken().catch(err=>{$('#delivery-note').textContent=err.message;});
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-book]');if(b){e.preventDefault();if(!$('#mobile-nav').hidden)setMenu(false);openBooking(b.dataset.car||null);}if(e.target.closest('[data-privacy]'))openDialog($('#privacy-dialog'));});
@@ -100,16 +111,16 @@ if(home){
   $$('[data-service]').forEach(b=>b.addEventListener('click',()=>{state.service=b.dataset.service;$('#quick-book [name=service]').value=state.service;state.occasion=state.service==='Трансфер'?'transfer':state.service==='Событие'?'wedding':'tour';$$('[data-service]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const transfer=state.service==='Трансфер';$('.transfer-field').hidden=!transfer;$('.transfer-field input').disabled=!transfer;renderPlan();}));
   $('#quick-book').addEventListener('submit',e=>{e.preventDefault();if(!$('#quick-book').reportValidity())return;openBooking();});
   const showroom={
-    bus:{image:'cathedral',alt:'Автобус LSBUS у Исаакиевского собора',title:'Автобусы.',seats:'53',label:'пассажирских места',category:'Туристические автобусы',models:'Yutong · Zhong Tong',price:'от 2 900 ₽ <small>/ час</small>'},
-    mini:{image:'sprinter',alt:'Микроавтобус Mercedes-Benz Sprinter LSBUS',title:'Микроавтобусы.',seats:'19–20',label:'пассажирских мест',category:'Микроавтобусы',models:'Mercedes-Benz Sprinter',price:'от 1 600 ₽ <small>/ час</small>'},
-    car:{image:'vip-interior',alt:'Салон минивэна из съёмки LSBUS',title:'Автомобили.',seats:'до 7',label:'пассажиров',category:'Автомобили и минивэны',models:'Toyota Camry · Mercedes Vito',price:'от 1 500 ₽ <small>/ час</small>'}
+    bus:{image:'cathedral',alt:'Автобус LSBUS у Исаакиевского собора',title:'Автобусы.',seats:'53',label:'пассажирских места',category:'Туристические автобусы',models:'Yutong · Zhong Tong'},
+    mini:{image:'sprinter',alt:'Микроавтобус Mercedes-Benz Sprinter LSBUS',title:'Микроавтобусы.',seats:'19',label:'пассажирских мест',category:'Микроавтобусы',models:'Mercedes-Benz Sprinter'},
+    car:{image:'maybach',alt:'Mercedes-Maybach из фильма LSBUS',title:'Автомобили.',seats:'до 7',label:'пассажиров',category:'Автомобили и минивэны',models:'Mercedes-Maybach · Mercedes-Benz Vito'}
   };
   const renderShowroom = button => {
     if (button.getAttribute('aria-pressed') === 'true') return;
     const group=button.dataset.showroom,s=showroom[group];
     $('#showroom-image').src='assets/'+s.image+'.webp';$('#showroom-image').alt=s.alt;
     $('#fleet-title').innerHTML=s.title;$('#showroom-seats').textContent=s.seats;$('.showroom-stage').dataset.group=group;$('.fleet-theatre').dataset.group=group;$('#showroom-seats-label').textContent=s.label;
-    $('.showroom-ticket .overline').textContent=s.category;$('#showroom-models').textContent=s.models;$('#showroom-price').innerHTML=s.price;
+    $('.showroom-ticket .overline').textContent=s.category;$('#showroom-models').textContent=s.models;const minPrice=Math.min(...fleet.filter(car=>car.group===group).map(car=>car.price));$('#showroom-price').innerHTML='от '+rub(minPrice)+' <small>/ час</small>';
     $('#showroom-link').href='fleet.html?group='+group;$$('[data-showroom]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
   };
   $('[data-sequence=fleet]').addEventListener('cinema:select', event => renderShowroom(event.detail));
@@ -131,7 +142,10 @@ if(home){
   $('#service-book').addEventListener('click',()=>{state.occasion=viewedService;renderPlan();openBooking();});
   renderPlan();
 }
-bookingForm.addEventListener('input',e=>{if(e.target.name==='passengers'&&setPax(e.target.value,{keepCar:true}))syncBooking();if(e.target.name==='occasion'){state.occasion=e.target.value;state.carId=null;renderPlan();syncBooking();}});
+bookingForm.addEventListener('input',e=>{
+  if(e.target.name==='passengers'&&!setPax(e.target.value,{keepCar:true})) syncBooking();
+  if(e.target.name==='occasion'){state.occasion=e.target.value;renderPlan();}
+});
 bookingForm.addEventListener('submit',async e=>{
   e.preventDefault();if(!bookingForm.reportValidity())return;
   const payload=Object.fromEntries(new FormData(bookingForm));const btn=bookingForm.querySelector('[type=submit]'),status=$('#form-status');
@@ -265,14 +279,14 @@ filmDialog.addEventListener('close',()=>{$('#full-film').pause();playHero();});
 if(document.body.dataset.page==='fleet'){
   let group=new URLSearchParams(location.search).get('group')||'all';if(!['all','bus','mini','car'].includes(group))group='all';
   const names={bus:'Автобус',mini:'Микроавтобус',car:'Автомобиль'};
-  function renderCatalog(){const pax=Number($('#catalog-passengers').value)||0;const cars=L.fleet.filter(c=>(group==='all'||c.group===group)&&c.seats>=pax);$('#catalog-count').textContent=cars.length+' из '+L.fleet.length+' моделей';$$('[data-group]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.group===group)));$('#catalog-grid').innerHTML=cars.length?cars.map(c=>`<article class="vehicle-card"><a href="transport.html?id=${encodeURIComponent(c.id)}"><div class="vehicle-image"><img src="../img/${esc(c.photos[0])}.jpg" alt="${esc(c.name)}" loading="lazy"></div><div class="vehicle-meta"><span>${names[c.group]}</span><span>${c.seats} мест${c.guide?' + гид':''}</span></div><h2>${esc(c.name)}</h2><div class="price-row"><strong>от ${rub(c.price)} / ч</strong><span>Подробнее о машине</span></div></a></article>`).join(''):`<div class="empty-state"><h2>Для ${esc(pax)} человек<br>подберём несколько машин.</h2><p>Расскажите о маршруте — согласуем состав транспорта.</p><button class="button dark" data-book>Рассчитать поездку</button><button class="button" id="catalog-reset">Сбросить фильтры</button></div>`;$('#catalog-reset')?.addEventListener('click',()=>{group='all';$('#catalog-passengers').value='';renderCatalog();});}
+  function renderCatalog(){const pax=Number($('#catalog-passengers').value)||0;const cars=fleet.filter(c=>(group==='all'||c.group===group)&&(!pax||c.seats>=pax));$('#catalog-count').textContent=cars.length+' из '+fleet.length+' моделей';$$('[data-group]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.group===group)));$('#catalog-grid').innerHTML=cars.length?cars.map(c=>`<article class="vehicle-card"><a href="transport.html?id=${encodeURIComponent(c.id)}"><div class="vehicle-image"><img src="${esc(photoUrl(c.photos[0]))}" alt="${esc(c.name)}" loading="lazy"></div><div class="vehicle-meta"><span>${names[c.group]}</span><span>${carCapacity(c)}</span></div><h2>${esc(c.name)}</h2><div class="price-row"><strong>от ${rub(c.price)} / ч</strong><span>Подробнее о машине</span></div></a></article>`).join(''):`<div class="empty-state"><h2>Для ${esc(pax)} человек<br>подберём несколько машин.</h2><p>Расскажите о маршруте — согласуем состав транспорта.</p><button class="button dark" data-book>Рассчитать поездку</button><button class="button" id="catalog-reset">Сбросить фильтры</button></div>`;$('#catalog-reset')?.addEventListener('click',()=>{group='all';$('#catalog-passengers').value='';renderCatalog();});}
   $$('[data-group]').forEach(b=>b.addEventListener('click',()=>{group=b.dataset.group;renderCatalog();}));$('#catalog-passengers').addEventListener('input',e=>{if(Number(e.target.value)>0&&Number(e.target.value)<=500)state.passengers=Number(e.target.value);renderCatalog();});renderCatalog();
 }
 if(document.body.dataset.page==='transport'){
-  const id=new URLSearchParams(location.search).get('id')||'yutong-6122h9',car=L.fleet.find(c=>c.id===id);if(!car){$('#transport-content').innerHTML='<section class="page-intro shell"><h1>Машина не найдена.</h1><a class="underlined" href="fleet.html">Вернуться в автопарк</a></section>';}
-  else{document.title=car.name+' с водителем — LSBUS';let slide=0,hours=4;$('#transport-name').textContent=car.name;$('#transport-breadcrumb').textContent=car.name;$('#transport-category').textContent=car.seats+' мест · Санкт-Петербург';$('#transport-copy').textContent=car.text;$('#transport-equipment').innerHTML=car.amen.map(a=>`<span>${esc(L.amen[a])}</span>`).join('');$('#transport-specs').innerHTML=[...car.specs,['Водитель','Включён в аренду']].map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');$('#transport-price').innerHTML=`от ${rub(car.price)} <small>за час</small>`;$('#transport-book').dataset.car=car.id;
-    $('#gallery-dots').innerHTML=car.photos.map((src,i)=>`<button type="button" data-photo="${i}" aria-label="Фото ${i+1}" aria-pressed="${i===0}"><img src="../img/${esc(src)}.jpg" alt="" loading="lazy"></button>`).join('');
-    const drawGallery=()=>{$('#vehicle-photo').src='../img/'+car.photos[slide]+'.jpg';$('#vehicle-photo').alt=car.name+' — фото '+(slide+1);$$('[data-photo]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.photo)===slide)));$('#gallery-count').textContent=(slide+1)+' / '+car.photos.length;};
+  const id=new URLSearchParams(location.search).get('id')||'yutong-6122h9',car=fleet.find(c=>c.id===id);if(!car){$('#transport-content').innerHTML='<section class="page-intro shell"><h1>Машина не найдена.</h1><a class="underlined" href="fleet.html">Вернуться в автопарк</a></section>';}
+  else{document.title=car.name+' с водителем — LSBUS';let slide=0,hours=4;$('#transport-name').textContent=car.name;$('#transport-breadcrumb').textContent=car.name;$('#transport-category').textContent=carCapacity(car)+' · Санкт-Петербург';$('#transport-copy').textContent=car.text;$('#transport-equipment').innerHTML=car.amen.map(a=>`<span>${esc(L.amen[a])}</span>`).join('');$('#transport-specs').innerHTML=[...car.specs,['Водитель','Включён в аренду']].map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');$('#transport-price').innerHTML=`от ${rub(car.price)} <small>за час</small>`;$('#transport-book').dataset.car=car.id;
+    $('#gallery-dots').innerHTML=car.photos.map((src,i)=>`<button type="button" data-photo="${i}" aria-label="Фото ${i+1}" aria-pressed="${i===0}"><img src="${esc(photoUrl(src))}" alt="" loading="lazy"></button>`).join('');
+    const drawGallery=()=>{$('#vehicle-photo').src=photoUrl(car.photos[slide]);$('#vehicle-photo').alt=car.name+' — фото '+(slide+1);$$('[data-photo]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.photo)===slide)));$('#gallery-count').textContent=(slide+1)+' / '+car.photos.length;};
     $$('[data-photo]').forEach(b=>b.addEventListener('click',()=>{slide=Number(b.dataset.photo);drawGallery();}));$('#gallery-previous').addEventListener('click',()=>{slide=(slide-1+car.photos.length)%car.photos.length;drawGallery();});$('#gallery-next').addEventListener('click',()=>{slide=(slide+1)%car.photos.length;drawGallery();});
     const drawPrice=()=>{$('#vehicle-hours').textContent=hours;$('#vehicle-total').textContent=rub(car.price*hours);$('#hours-less').disabled=hours===4;$('#hours-more').disabled=hours===14;state.hours=hours;};$('#hours-less').addEventListener('click',()=>{hours=Math.max(4,hours-1);drawPrice();});$('#hours-more').addEventListener('click',()=>{hours=Math.min(14,hours+1);drawPrice();});drawGallery();drawPrice();
   }
