@@ -23,7 +23,13 @@ document.querySelector('[data-footer]').innerHTML=`<footer class="site-footer" i
 document.querySelector('[data-dialogs]').innerHTML=`<dialog class="booking-dialog" id="booking-dialog" aria-labelledby="booking-title"><div class="dialog-inner"><div class="dialog-top"><p class="overline"><span class="red-dot"></span> Ваша поездка с LSBUS</p><button class="dialog-close" data-close aria-label="Закрыть заявку">×</button></div><h2 id="booking-title">Параметры поездки.</h2><p class="dialog-lead">Оставьте параметры и контакты. Маршрут, наличие транспорта и окончательную стоимость согласуем с вами.</p><form class="booking-form" id="booking-form"><div class="field-pair"><label>Повод поездки<select name="occasion">${OCC.map(([id,name])=>`<option value="${id}">${name}</option>`).join('')}</select></label><label>Количество пассажиров<input type="number" name="passengers" min="1" max="500" value="18" required inputmode="numeric"></label></div><div class="field-pair"><label>Дата поездки<input name="date" type="date" required></label><label>Время подачи<input name="time" type="time" required></label></div><label>Откуда забрать<input name="pickup" placeholder="Адрес, аэропорт, вокзал, отель" maxlength="255" minlength="3" required autocomplete="street-address"></label><label>Куда едем<input name="dropoff" placeholder="Адрес или маршрут поездки" maxlength="255" required minlength="3"></label><div class="field-pair"><label>Время окончания, если известно<input name="end_time" type="time"></label><label>Место окончания, если известно<input name="end_place" maxlength="300" placeholder="Для почасовой поездки"></label></div><div class="field-pair"><label>Ваше имя<input name="name" placeholder="Как к вам обращаться" minlength="2" maxlength="80" required autocomplete="name"></label><label>Телефон<input type="tel" name="phone" placeholder="+7 999 999 99 99" required autocomplete="tel" inputmode="tel" maxlength="24"></label></div><label>Email, если удобно ответить письмом<input type="email" name="email" autocomplete="email" placeholder="mail@example.ru" maxlength="254"></label><label>Расскажите о поездке<textarea name="comment" maxlength="1200" placeholder="Номер рейса, остановки, багаж, пожелания"></textarea></label><div class="booking-preview" id="booking-preview" aria-live="polite"></div><label class="consent"><input type="checkbox" name="consent" value="1" required><span>Согласен передать указанные данные для расчёта моей поездки. <button type="button" class="text-button" data-privacy>О данных формы</button></span></label><label class="trap" aria-hidden="true">Ваш сайт<input name="website" tabindex="-1" autocomplete="off"></label><button type="submit" class="button red wide">Отправить заявку на расчёт</button><p class="delivery-note" id="delivery-note">${release?'Проверяем подключение формы.':'Демонстрационная версия: заявка сохраняется только для проверки формы и не отправляется менеджеру.'}</p><div class="form-status" id="form-status" role="status" hidden></div></form></div></dialog><dialog class="film-dialog" id="film-dialog" aria-label="Фильм о LSBUS"><div class="film-top"><span>LSBUS / Петербург в движении</span><button class="dialog-close" data-close aria-label="Закрыть фильм">×</button></div><video id="full-film" controls playsinline preload="none"></video></dialog><dialog class="booking-dialog" id="privacy-dialog" aria-labelledby="privacy-title"><div class="dialog-inner"><div class="dialog-top"><p class="overline">О данных формы</p><button class="dialog-close" data-close aria-label="Закрыть информацию">×</button></div><h2 id="privacy-title">${release?'О данных<br>заявки.':'О демонстрационной<br>форме.'}</h2><div class="privacy-copy">${release?`<p>ООО «Логистик Систем» использует контакты и параметры поездки, чтобы рассчитать заказ и связаться с вами. По вопросам о заявке пишите на <a class="underlined" href="mailto:${L.email}">${esc(L.email)}</a>.</p>`:'<p>В локальной версии сохраняется тестовая заявка. Для проверки используйте вымышленные контакты.</p>'}<p style="margin-top:18px">Для подсказок сервису Photon передаётся текст из адресного поля.</p><p style="margin-top:18px">По реальной поездке свяжитесь с LSBUS: <a class="underlined" href="${L.phoneHref}">${esc(L.phone)}</a>.</p></div></div></dialog>`;
 const booking=$('#booking-dialog'),bookingForm=$('#booking-form'),filmDialog=$('#film-dialog'),heroVideo=$('#hero-video');
 const publicDemo = document.documentElement.hasAttribute('data-pages-demo');
-window.LSCinemaForm?.enhance($('#quick-book'));
+const quickForm = $('#quick-book');
+const currentDate = window.LSCinemaForm.currentDate();
+state.date = currentDate;
+for (const form of [quickForm, bookingForm]) {
+  if (form) form.elements.date.value = currentDate;
+}
+window.LSCinemaForm.enhance(quickForm);
 window.LSCinemaForm?.enhance(bookingForm);
 if (publicDemo) {
   $('.dialog-lead').textContent = 'Попробуйте указать маршрут и параметры поездки. Для проверки используйте вымышленные контакты.';
@@ -58,7 +64,10 @@ function syncBooking(){
   $('#booking-preview').innerHTML=`<b>${esc(name)}</b><br>${passengers}${seats}${extra}<br><span>Предварительный подбор. Наличие на дату подтвердит менеджер.</span>`;
 }
 function openBooking(carId=null){
-  state.carId=carId;$$('#quick-book input').forEach(f=>{if(f.name&&f.name!=='passengers')state[f.name]=f.value;});
+  state.carId=carId;
+  if (quickForm) {
+    for (const key of ['pickup', 'dropoff', 'date', 'time', 'end_time']) state[key] = quickForm.elements[key].value;
+  }
   for(const [key,val]of Object.entries(state)){const f=bookingForm.elements.namedItem(key);if(f)f.value=val;}
   window.LSCinemaForm?.sync(bookingForm);
   if(carId&&currentCar().seats===null) bookingForm.elements.passengers.value='';
@@ -80,24 +89,21 @@ $('.menu-toggle').addEventListener('click',()=>setMenu($('.menu-toggle').getAttr
 $$('#mobile-nav a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#mobile-nav').hidden){setMenu(false);$('.menu-toggle').focus();}});
 let scrollQueued=false;addEventListener('scroll',()=>{if(scrollQueued)return;scrollQueued=true;requestAnimationFrame(()=>{$('#site-header').classList.toggle('solid',scrollY>120);$('.mobile-cta').classList.toggle('is-visible',scrollY>600);scrollQueued=false;});},{passive:true});
-document.body.insertAdjacentHTML('beforeend','<datalist id="lsbus-places"><option value="Аэропорт Пулково"><option value="Московский вокзал"><option value="Ладожский вокзал"><option value="Финляндский вокзал"><option value="Гранд Отель Европа"></datalist>');
-$$('input[name=pickup],input[name=dropoff],input[name=end_place]').forEach(f=>f.setAttribute('list','lsbus-places'));
 $$('input[type=time]').forEach(f=>f.step='600');
-const now=new Date(),today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');$$('input[type=date]').forEach(f=>f.min=today);
 function setPax(value,{keepCar=false}={}){const n=Number(value);if(!Number.isInteger(n)||n<1||n>500)return false;state.passengers=n;if(!keepCar)state.carId=null;renderPlan();return true;}
 function drawCapacity(t){
   const count=Math.min(t.count,3),kind=t.car.group==='bus'?'Автобус':t.car.group==='mini'?'Микроавтобус':'Автомобиль';
   return Array.from({length:count},(_,i)=>{
     const occupied=Math.min(t.car.seats,Math.max(0,state.passengers-i*t.car.seats)),ratio=occupied/t.car.seats;
     const bus=`<svg viewBox="0 0 420 98" aria-hidden="true"><defs><clipPath id="load-window-${i}"><path d="M28 23H365Q375 23 379 34L387 51H28Z"/></clipPath></defs><path d="M14 19Q14 11 24 11H364Q388 11 396 34L408 67V77H14Z" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M28 23H365Q375 23 379 34L387 51H28Z" fill="none" stroke="currentColor" opacity=".2"/><g clip-path="url(#load-window-${i})"><rect x="28" y="23" width="${360*ratio}" height="29" fill="currentColor" opacity=".72"/>${Array.from({length:9},(_,k)=>`<path d="M${65+k*35} 21V53" stroke="#eeeae1" stroke-width="3"/>`).join('')}</g><path d="M14 63H408M348 55V76M370 55V76M393 57H400M21 59H27" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/><circle cx="76" cy="77" r="12" fill="#eeeae1" stroke="currentColor" stroke-width="1.4"/><circle cx="76" cy="77" r="5" fill="none" stroke="currentColor" opacity=".5"/><circle cx="330" cy="77" r="12" fill="#eeeae1" stroke="currentColor" stroke-width="1.4"/><circle cx="330" cy="77" r="5" fill="none" stroke="currentColor" opacity=".5"/></svg>`;
+    const mini = `<svg viewBox="0 0 420 98" aria-hidden="true"><defs><clipPath id="mini-window-${i}"><path d="M55 25H258L290 51H55Z"/></clipPath></defs><path d="M44 54V30Q44 16 59 16H252Q268 16 278 28L313 56L342 64Q349 66 350 75V80H44Z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M55 25H258L290 51H55Z M295 54L310 63H294Z M253 51V79 M44 64H132" fill="none" stroke="currentColor" opacity=".4"/><g clip-path="url(#mini-window-${i})"><rect x="55" y="25" width="${235*ratio}" height="26" fill="currentColor" opacity=".72"/></g><path d="M105 25V51M157 25V51M207 25V51M257 25V51" stroke="var(--paper)" stroke-width="3"/><circle cx="98" cy="80" r="11" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/><circle cx="295" cy="80" r="11" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/></svg>`;
     const car=`<svg viewBox="0 0 420 98" aria-hidden="true"><path d="M20 63L38 49 109 37 149 13H258L311 40 378 49 402 66V79H20Z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M124 37L154 20H252L288 39Z" fill="currentColor" opacity="${.3+ratio*.5}"/><path d="M207 19V39M25 65H397" fill="none" stroke="currentColor" opacity=".4"/><circle cx="89" cy="77" r="15" fill="#eeeae1" stroke="currentColor" stroke-width="1.4"/><circle cx="89" cy="77" r="6" fill="none" stroke="currentColor" opacity=".4"/><circle cx="335" cy="77" r="15" fill="#eeeae1" stroke="currentColor" stroke-width="1.4"/><circle cx="335" cy="77" r="6" fill="none" stroke="currentColor" opacity=".4"/></svg>`;
-    return `<div class="capacity-unit">${t.car.group==='car'?car:bus}<div class="unit-label"><span>${kind}${t.count>1?' / '+String(i+1).padStart(2,'0'):''}</span><b>${occupied} из ${t.car.seats} мест</b></div></div>`;
+    return `<div class="capacity-unit">${{car,mini,bus}[t.car.group]}<div class="unit-label"><span>${kind}${t.count>1?' / '+String(i+1).padStart(2,'0'):''}</span><b>${occupied} из ${t.car.seats} мест</b></div></div>`;
   }).join('')+(t.count>count?`<p class="capacity-more">Ещё ${t.count-count} ${plural(t.count-count,['машина','машины','машин'])} в составе. Всего ${t.capacity} мест.</p>`:'');
 }
 function renderPlan(){
   const t=trip();if($('#hero-passengers'))$('#hero-passengers').value=state.passengers;if($('#planner-passengers'))$('#planner-passengers').value=state.passengers;if($('#people-range'))$('#people-range').value=Math.min(160,state.passengers);
   const title=t.count>1?t.count+' '+plural(t.count,['автобус','автобуса','автобусов'])+' Yutong':t.car.group==='bus'?'Туристический автобус':t.car.group==='mini'?'Mercedes-Benz Sprinter':t.car.name;
-  if($('#quick-recommendation'))$('#quick-recommendation').textContent=t.count>1?'Подойдут '+t.count+' '+plural(t.count,['автобус','автобуса','автобусов'])+' · '+t.capacity+' мест всего':'Подойдёт '+(t.car.group==='bus'?'автобус':t.car.group==='mini'?'микроавтобус':'автомобиль')+' на '+t.car.seats+' мест';
   if($('#recommend-title')){
     $('#recommend-title').textContent=title;$('#recommend-description').textContent=t.count>1?`${t.count} × ${t.car.name}. Весь состав под один маршрут.`:`${t.car.name} · ${t.car.seats} пассажирских мест`;
     $('#recommend-count').textContent=String(t.count).padStart(2,'0')+' '+plural(t.count,['машина','машины','машин']);$('#recommend-capacity').textContent=t.capacity+' мест всего';
@@ -117,22 +123,24 @@ if(home){
   $$('[data-people]').forEach(b=>b.addEventListener('click',()=>setPax(Number(b.dataset.people))));
   $$('[data-occasion]').forEach(b=>b.addEventListener('click',()=>{state.occasion=b.dataset.occasion;state.carId=null;renderPlan();}));
   $$('[data-hours]').forEach(b=>b.addEventListener('click',()=>{state.hours=Math.max(4,Math.min(14,state.hours+Number(b.dataset.hours)));renderPlan();}));
-  $$('[data-service]').forEach(b=>b.addEventListener('click',()=>{state.service=b.dataset.service;$('#quick-book [name=service]').value=state.service;state.occasion=state.service==='Трансфер'?'transfer':state.service==='Событие'?'wedding':'tour';$$('[data-service]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const transfer=state.service==='Трансфер';$('.transfer-field').hidden=!transfer;$('.transfer-field input').disabled=!transfer;renderPlan();}));
   $('#quick-book').addEventListener('submit',e=>{e.preventDefault();if(!$('#quick-book').reportValidity())return;openBooking();});
   const showroom={
-    bus:{image:'cathedral',alt:'Автобус LSBUS у Исаакиевского собора',title:'Автобусы.',seats:'53–55',label:'пассажирских мест',category:'Туристические автобусы',models:['Higer V12 PRO — 55 мест', 'Yutong ZK6128H и ZK6122H9 — 53 места']},
-    mini:{image:'sprinter',alt:'Микроавтобус Mercedes-Benz Sprinter LSBUS',title:'Микроавтобусы.',seats:'19',label:'мест в Sprinter',category:'Микроавтобусы',models:['Sprinter Black и Sprinter (907)', 'Iveco Daily']},
-    car:{image:'maybach',alt:'Mercedes-Maybach из фильма LSBUS',title:'Автомобили.',seats:'3',label:'места в Maybach',category:'Автомобили и минивэны',models:['Mercedes-Benz S 560 4MATIC (Maybach)', 'Mercedes-Benz V-Class']}
+    bus:{image:'fleet',alt:'Автобусы LSBUS у стадиона',title:'Автобусы.',seats:'53–55',label:'пассажирских мест',category:'Туристические автобусы'},
+    mini:{image:'sprinter',alt:'Микроавтобус Mercedes-Benz Sprinter LSBUS',title:'Микроавтобусы.',seats:'19',label:'мест в микроавтобусе',category:'Микроавтобусы'},
+    car:{image:'maybach',alt:'Mercedes-Maybach из фильма LSBUS',title:'Автомобили.',seats:'3',label:'пассажирских места',category:'Автомобили и минивэны'}
   };
   const renderShowroom = button => {
     if (button.getAttribute('aria-pressed') === 'true') return;
     const group=button.dataset.showroom,s=showroom[group];
     $('#showroom-image').src=asset('assets/'+s.image+'.webp');$('#showroom-image').alt=s.alt;
     $('#fleet-title').innerHTML=s.title;$('#showroom-seats').textContent=s.seats;$('.showroom-stage').dataset.group=group;$('.fleet-theatre').dataset.group=group;$('#showroom-seats-label').textContent=s.label;
-    $('.showroom-ticket .overline').textContent=s.category;const models = $('#showroom-models');
-    models.replaceChildren(document.createTextNode(s.models[0]), document.createElement('br'), document.createTextNode(s.models[1]));const minPrice=Math.min(...fleet.filter(car=>car.group===group).map(car=>car.price).filter(price=>price!==null));$('#showroom-price').innerHTML='от '+rub(minPrice)+' <small>/ час</small>';
+    $('#showroom-category').textContent=s.category;
+    const minPrice=Math.min(...fleet.filter(car=>car.group===group).map(car=>car.price).filter(price=>price!==null));$('#showroom-price').innerHTML='от '+rub(minPrice)+' <small>/ час</small>';
     $('#showroom-link').href=fleetHref+'?group='+group;$$('[data-showroom]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
   };
+  $$('.showroom-tabs [data-showroom]').forEach(button => {
+    button.addEventListener('dblclick', () => location.assign(fleetHref + '?group=' + button.dataset.showroom));
+  });
   $('[data-sequence=fleet]').addEventListener('cinema:select', event => renderShowroom(event.detail));
   const serviceViews={tour:{image:'cathedral',caption:'Экскурсии по городу и пригородам',description:'Маршрут под вашу программу: от обзорной экскурсии по Петербургу до поездки в пригороды. Подберём транспорт по размеру группы.',button:'Обсудить экскурсию'},transfer:{image:'palace',caption:'Встречи гостей и делегаций',description:'Встретим в аэропорту, на вокзале или у отеля. Укажите количество гостей, багаж и время прибытия — мы подберём подходящий транспорт.',button:'Обсудить трансфер'},staff:{image:'fleet',caption:'Ваша команда в одном маршруте',description:'Регулярная доставка сотрудников до места работы и обратно. Начнём с адресов, смен, количества людей и графика.',button:'Обсудить развозку'},kids:{image:'coach',caption:'Поездки для детей и сопровождающих',description:'Для экскурсий, лагерей и детских мероприятий. Согласуем число детей и сопровождающих, маршрут и организацию перевозки.',button:'Обсудить детскую поездку'},wedding:{image:'riverside',caption:'Ваш день, ваши гости',description:'Соберём гостей по нужным адресам и свяжем точки вашей программы. Подберём общий транспорт и индивидуальные трансферы.',button:'Обсудить событие'},intercity:{image:'coach',caption:'Планы за пределами города',description:'Поездки по Ленинградской области и городам России. Стоимость зависит от протяжённости маршрута и программы.',button:'Обсудить маршрут'}};
   let viewedService = 'tour';
@@ -284,7 +292,7 @@ if(heroVideo){
   document.addEventListener('visibilitychange',()=>document.hidden?pauseHero():playHero());
   new IntersectionObserver(([entry])=>{heroVisible=entry.isIntersecting;if(heroVisible)playHero();else pauseHero();},{threshold:.08}).observe($('.hero'));
 }
-$$('[data-film]').forEach(b=>b.addEventListener('click',()=>{const film=$('#full-film');if(!film.src)film.src=asset('assets/film.mp4');pauseHero();openDialog(filmDialog);film.play().catch(()=>{});}));
+$$('[data-film]').forEach(b=>b.addEventListener('click',()=>{const film=$('#full-film');if(!film.src)film.src=asset('assets/film-narrated.mp4');pauseHero();openDialog(filmDialog);film.play().catch(()=>{});}));
 filmDialog.addEventListener('close',()=>{$('#full-film').pause();playHero();});
 const blogList = $('[data-blog-list]');
 if (blogList && !publicDemo) {

@@ -18,7 +18,7 @@
     guide: true,
     price: 3000,
     amen: [],
-    photos: ['assets/higer-v12-pro-livery.webp', 'assets/higer-v12-pro-front.webp',
+    photos: ['assets/higer-v12-pro-livery-badge.webp', 'assets/higer-v12-pro-front.webp',
       'assets/higer-v12-pro-interior.webp', 'assets/higer-v12-pro-interior-lit.webp'],
     photoLabels: ['иллюстрация внешнего вида', 'вид спереди', 'пассажирский салон', 'салон с вечерней подсветкой'],
     coverNote: 'Внешний вид — иллюстрация',

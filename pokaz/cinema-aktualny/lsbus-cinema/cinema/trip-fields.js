@@ -21,8 +21,9 @@
 
   function readDate(value) {
     const text = value.trim();
-    const typed = /^(\d{2})[.\/]?(\d{2})[.\/]?(\d{4})$/.exec(text);
-    const normalized = typed ? `${typed[3]}-${typed[2]}-${typed[1]}` : text;
+    const typed = /^(\d{2})[.\/]?(\d{2})[.\/]?(\d{4}|\d{2})$/.exec(text);
+    const year = typed && (typed[3].length === 2 ? '20' + typed[3] : typed[3]);
+    const normalized = typed ? `${year}-${typed[2]}-${typed[1]}` : text;
     if (!/^\d{4}-\d\d-\d\d$/.test(normalized) || normalized < today().date) return '';
     const date = asDate(normalized);
     return Number.isFinite(date.getTime()) && iso(date) === normalized ? normalized : '';
@@ -441,6 +442,7 @@
   }
 
   window.LSCinemaForm = {
+    currentDate: () => today().date,
     enhance(form) {
       if (!form) return;
       form.querySelectorAll('input[name="pickup"], input[name="dropoff"], input[name="end_place"]').forEach(enhanceAddress);

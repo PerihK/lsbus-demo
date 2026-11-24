@@ -183,3 +183,88 @@ dialog{border:0;padding:0;max-width:calc(100vw - 30px);max-height:calc(100svh - 
   .vehicle-card h2 { font-size: clamp(27px, 2.5vw, 36px); }
   .vehicle-meta, .price-row span { font-size: 11px; }
 }
+
+#trip .trip-intro {
+  display: block;
+  margin-bottom: 0;
+  padding-bottom: clamp(20px, 3vw, 36px);
+}
+
+#trip .quick-fields {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: end;
+  gap: 22px 18px;
+  padding-block: 25px 20px;
+}
+
+#trip .quick-fields > label,
+#trip .quick-fields > .quick-passengers {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 0 0 8px;
+  margin: 0;
+  font-size: 12px;
+}
+
+#trip .pickup-field,
+#trip .destination-field { grid-column: span 3; }
+
+#trip .quick-fields > .button {
+  grid-column: span 2;
+  margin: 0;
+  min-height: 44px;
+  padding-inline: 12px;
+  font-size: 13px;
+}
+
+#trip .quick-note { font-size: 12px; max-width: none; }
+
+.showroom .showroom-capacity strong {
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+}
+
+.showroom .showroom-capacity > span {
+  margin-top: 8px;
+  font-size: clamp(11px, 1.15vw, 16px);
+  line-height: 1.35;
+}
+
+.showroom .showroom-ticket {
+  grid-template-columns: minmax(0, 1.05fr) auto minmax(0, 1.05fr);
+  align-items: center;
+}
+
+.showroom .showroom-ticket > .underlined {
+  grid-column: auto;
+  justify-self: start;
+  margin: 0;
+  font-size: clamp(12px, 1.25vw, 17px);
+}
+
+#showroom-category {
+  justify-self: end;
+  color: var(--paper);
+  text-align: right;
+  font-size: clamp(11px, 1.05vw, 15px);
+}
+
+@media (min-width: 769px) {
+  .footer-navigation,
+  .footer-navigation nav a,
+  .footer-bottom .text-button { font-size: 14px; }
+  .footer-navigation h3 { font-size: 12px; }
+}
+
+@media (max-width: 760px) {
+  #trip .quick-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #trip .pickup-field, #trip .destination-field, #trip .trip-date-field,
+  #trip .quick-fields > .quick-passengers, #trip .quick-fields > .button { grid-column: 1 / -1; }
+  #trip .quick-passengers { justify-content: space-between; }
+  #trip .quick-fields .number-control { gap: 9px; }
+}
+
+@media (max-width: 420px) {
+  .showroom .showroom-ticket { grid-template-columns: 1fr auto; }
+  #showroom-category { grid-column: 1 / -1; justify-self: start; text-align: left; }
+}
