@@ -6,9 +6,9 @@
     if(!Number.isInteger(hrs)||hrs<4||hrs>14)throw new RangeError('Укажите от 4 до 14 часов');
     const F=id=>fleet.find(c=>c.id===id);
     let car,n=1;
-    if(pax<=3)car=F('maybach')||F('vito');
-    else if(pax<=7)car=F('vito');
+    if(pax<=3)car=F('maybach');
     else if(pax<=19)car=F(occasion==='wedding'?'sprinter-black':'sprinter-leather');
+    else if(pax>53&&pax<=55)car=F('higer-v12-pro');
     if(!car||car.seats<pax){
       car=F('yutong-6122h9');
       if(car) n=Math.ceil(pax/car.seats);
