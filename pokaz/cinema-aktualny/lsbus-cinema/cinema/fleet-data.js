@@ -50,7 +50,7 @@
   const vehiclePhotos = {
     'yutong-6128': {
       name: 'Yutong ZK6128H',
-      photos: ['assets/yutong-zk6128h-cover.webp', 'assets/yutong-zk6128h-cabin.webp',
+      photos: ['assets/yutong-zk6128h-cover-dscf4892.webp', 'assets/yutong-zk6128h-cabin.webp',
         'assets/yutong-zk6128h-seats.webp', 'assets/yutong-zk6128h-luggage.webp'],
       photoLabels: ['внешний вид', 'пассажирский салон', 'кресла', 'багажное отделение']
     },
