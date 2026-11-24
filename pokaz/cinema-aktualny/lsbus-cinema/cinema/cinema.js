@@ -121,7 +121,7 @@ if(home){
   $('#quick-book').addEventListener('submit',e=>{e.preventDefault();if(!$('#quick-book').reportValidity())return;openBooking();});
   const showroom={
     bus:{image:'cathedral',alt:'Автобус LSBUS у Исаакиевского собора',title:'Автобусы.',seats:'53–55',label:'пассажирских мест',category:'Туристические автобусы',models:['Yutong 6128 и 6122H9 — 53 места', 'Higer V12 PRO — 55 мест']},
-    mini:{image:'sprinter',alt:'Микроавтобус Mercedes-Benz Sprinter LSBUS',title:'Микроавтобусы.',seats:'19',label:'пассажирских мест',category:'Микроавтобусы',models:['Mercedes-Benz Sprinter Black и Tourist', 'Sprinter со стандартным и кожаным салоном']},
+    mini:{image:'sprinter',alt:'Микроавтобус Mercedes-Benz Sprinter LSBUS',title:'Микроавтобусы.',seats:'19',label:'пассажирских мест',category:'Микроавтобусы',models:['Sprinter Black и Sprinter с кожаным салоном', 'Iveco Daily']},
     car:{image:'maybach',alt:'Mercedes-Maybach из фильма LSBUS',title:'Автомобили.',seats:'до 7',label:'пассажиров',category:'Автомобили и минивэны',models:['Mercedes-Maybach — 3 места', 'Mercedes-Benz Vito — минивэн на 7 мест']}
   };
   const renderShowroom = button => {
