@@ -140,3 +140,13 @@ dialog{border:0;padding:0;max-width:calc(100vw - 30px);max-height:calc(100svh - 
   .cinema-blog-header { align-items:flex-end; }
   .cinema-blog-list { grid-template-columns:1fr; gap:0; }
 }
+
+/* Vehicle capacities in the comparison demo. */
+.showroom .fleet-theatre[data-group="bus"] .showroom-capacity strong {
+  font-size: clamp(42px, min(6.4vw, 11svh), 110px);
+  font-variant-numeric: lining-nums;
+}
+.showroom-ticket #showroom-models { font-size: clamp(12px, 1.2vw, 17px); line-height: 1.55; }
+@media (max-width: 600px) {
+  .showroom .fleet-theatre[data-group="bus"] .showroom-capacity strong { font-size: clamp(32px, 10vw, 48px); }
+}

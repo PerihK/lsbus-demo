@@ -120,16 +120,17 @@ if(home){
   $$('[data-service]').forEach(b=>b.addEventListener('click',()=>{state.service=b.dataset.service;$('#quick-book [name=service]').value=state.service;state.occasion=state.service==='Трансфер'?'transfer':state.service==='Событие'?'wedding':'tour';$$('[data-service]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const transfer=state.service==='Трансфер';$('.transfer-field').hidden=!transfer;$('.transfer-field input').disabled=!transfer;renderPlan();}));
   $('#quick-book').addEventListener('submit',e=>{e.preventDefault();if(!$('#quick-book').reportValidity())return;openBooking();});
   const showroom={
-    bus:{image:'cathedral',alt:'Автобус LSBUS у Исаакиевского собора',title:'Автобусы.',seats:'55',label:'пассажирских мест',category:'Туристические автобусы',models:'Higer · Yutong · Zhong Tong'},
-    mini:{image:'sprinter',alt:'Микроавтобус Mercedes-Benz Sprinter LSBUS',title:'Микроавтобусы.',seats:'19',label:'пассажирских мест',category:'Микроавтобусы',models:'Mercedes-Benz Sprinter'},
-    car:{image:'maybach',alt:'Mercedes-Maybach из фильма LSBUS',title:'Автомобили.',seats:'до 7',label:'пассажиров',category:'Автомобили и минивэны',models:'Mercedes-Maybach · Mercedes-Benz Vito'}
+    bus:{image:'cathedral',alt:'Автобус LSBUS у Исаакиевского собора',title:'Автобусы.',seats:'53–55',label:'пассажирских мест',category:'Туристические автобусы',models:['Yutong 6128 и 6122H9 — 53 места', 'Higer V12 PRO — 55 мест']},
+    mini:{image:'sprinter',alt:'Микроавтобус Mercedes-Benz Sprinter LSBUS',title:'Микроавтобусы.',seats:'19',label:'пассажирских мест',category:'Микроавтобусы',models:['Mercedes-Benz Sprinter Black и Tourist', 'Sprinter со стандартным и кожаным салоном']},
+    car:{image:'maybach',alt:'Mercedes-Maybach из фильма LSBUS',title:'Автомобили.',seats:'до 7',label:'пассажиров',category:'Автомобили и минивэны',models:['Mercedes-Maybach — 3 места', 'Mercedes-Benz Vito — минивэн на 7 мест']}
   };
   const renderShowroom = button => {
     if (button.getAttribute('aria-pressed') === 'true') return;
     const group=button.dataset.showroom,s=showroom[group];
     $('#showroom-image').src=asset('assets/'+s.image+'.webp');$('#showroom-image').alt=s.alt;
     $('#fleet-title').innerHTML=s.title;$('#showroom-seats').textContent=s.seats;$('.showroom-stage').dataset.group=group;$('.fleet-theatre').dataset.group=group;$('#showroom-seats-label').textContent=s.label;
-    $('.showroom-ticket .overline').textContent=s.category;$('#showroom-models').textContent=s.models;const minPrice=Math.min(...fleet.filter(car=>car.group===group).map(car=>car.price));$('#showroom-price').innerHTML='от '+rub(minPrice)+' <small>/ час</small>';
+    $('.showroom-ticket .overline').textContent=s.category;const models = $('#showroom-models');
+    models.replaceChildren(document.createTextNode(s.models[0]), document.createElement('br'), document.createTextNode(s.models[1]));const minPrice=Math.min(...fleet.filter(car=>car.group===group).map(car=>car.price).filter(price=>price!==null));$('#showroom-price').innerHTML='от '+rub(minPrice)+' <small>/ час</small>';
     $('#showroom-link').href=fleetHref+'?group='+group;$$('[data-showroom]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
   };
   $('[data-sequence=fleet]').addEventListener('cinema:select', event => renderShowroom(event.detail));
