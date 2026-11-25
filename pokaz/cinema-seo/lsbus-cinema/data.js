@@ -2,6 +2,8 @@
 window.LS = {
   phone: '+7 (812) 329-0-329', phoneHref: 'tel:+78123290329',
   mobile: '+7 (995) 997-50-80', wa: 'https://wa.me/79959975080',
+  maxChat: null,
+  telegramChat: null,
   email: 'info@lsbus.spb.ru',
   address: 'наб. Обводного канала, 93А, офис К-200',
   groups: [

@@ -351,3 +351,24 @@ dialog{border:0;padding:0;max-width:calc(100vw - 30px);max-height:calc(100svh - 
   .editorial-image { max-height: none; }
   .editorial-layout { padding-bottom: 45px; }
 }
+
+.contact-messengers { color: var(--ink); }
+.seo-footer .contact-messengers { grid-column: 2; color: var(--paper); }
+.editorial-title .contact-messengers { margin-top: 24px; }
+.contact-messengers p, .seo-footer .contact-messengers p {
+  margin: 0 0 8px; color: inherit; font-size: 13px; font-weight: 600;
+}
+.contact-messengers ul {
+  display: flex; flex-wrap: wrap; gap: 7px; margin: 0; padding: 0; list-style: none;
+}
+.contact-messengers a, .contact-messengers .messenger-pending {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+  padding: 6px 12px; border: 1px solid currentColor; border-radius: 3px; font-size: 13px;
+}
+.contact-messengers a:hover { background: #77777719; }
+.contact-messengers a:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.contact-messengers .messenger-pending { opacity: .55; }
+html:not([data-pages-demo]) [data-pending-messenger] { display: none; }
+@media (max-width: 560px) {
+  .seo-footer .contact-messengers { grid-column: 1; }
+}
