@@ -191,3 +191,13 @@
   .is-scroll-driven .fleet-image { height: 25svh; }
   .is-scroll-driven .program-image { height: 29svh; }
 }
+
+@media (max-width: 800px), (pointer: coarse) {
+  [data-sequence=stories]:not(.is-scroll-driven) .program-strip {
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
+  }
+  [data-sequence=stories]:not(.is-scroll-driven) .program-frame:nth-child(even) {
+    padding-top: 0;
+  }
+}

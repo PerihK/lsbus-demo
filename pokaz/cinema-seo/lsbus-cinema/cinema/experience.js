@@ -28,6 +28,8 @@ function bindSequence(sequence) {
   const counter = sequence.querySelector('#strip-counter');
   const buttons = [...sequence.querySelectorAll(strip ? '.program-frame' : '[data-showroom]')];
   const controls = [...sequence.querySelectorAll('[data-strip-step]')];
+  const touchStories = strip ? matchMedia('(max-width: 800px), (pointer: coarse)') : null;
+  const scrollDriven = () => !reduce && !touchStories?.matches;
   let current = -1;
   const clamp = (value, max) => Math.max(0, Math.min(value, max));
   const stickyTop = () => parseFloat(getComputedStyle(stage).top) || 0;
@@ -48,7 +50,7 @@ function bindSequence(sequence) {
 
   function draw() {
     const distance = travel();
-    if (reduce || distance <= 0) return;
+    if (!scrollDriven() || distance <= 0) return;
     const progress = clamp((stickyTop() - sequence.getBoundingClientRect().top) / distance, 1);
     const step = progress * (buttons.length - 1);
     const lower = Math.floor(step);
@@ -59,8 +61,8 @@ function bindSequence(sequence) {
 
   function goTo(index, behavior = 'smooth') {
     index = clamp(index, buttons.length - 1);
-    if (reduce || travel() <= 0) {
-      if (strip) strip.scrollLeft = cardOffset(index);
+    if (!scrollDriven() || travel() <= 0) {
+      if (strip) strip.scrollTo({left: cardOffset(index), behavior: reduce ? 'instant' : behavior});
       select(index);
       return;
     }
@@ -68,15 +70,15 @@ function bindSequence(sequence) {
     window.scrollTo({top: top + travel() * index / (buttons.length - 1), behavior});
   }
 
-  if (!reduce) {
-    sequence.style.setProperty('--sequence-steps', buttons.length - 1);
-    sequence.classList.add('is-scroll-driven');
-  }
+  sequence.style.setProperty('--sequence-steps', buttons.length - 1);
+  const applyMode = () => sequence.classList.toggle('is-scroll-driven', scrollDriven());
+  applyMode();
+  touchStories?.addEventListener('change', applyMode);
   buttons.forEach((button, index) => {
     button.addEventListener('click', () => goTo(index));
     button.addEventListener('focus', () => {
       // Tabbing to an offscreen card brings its scroll position into view.
-      if (strip && button.matches(':focus-visible') && current !== index && !reduce) goTo(index, 'instant');
+      if (strip && button.matches(':focus-visible') && current !== index && scrollDriven()) goTo(index, 'instant');
     });
   });
   controls.forEach(button => button.addEventListener('click', () => goTo(current + Number(button.dataset.stripStep))));
@@ -85,7 +87,8 @@ function bindSequence(sequence) {
     event.preventDefault();
     goTo(current + (event.key === 'ArrowRight' ? 1 : -1));
   });
-  if (reduce && strip) strip.addEventListener('scroll', () => {
+  strip?.addEventListener('scroll', () => {
+    if (scrollDriven()) return;
     const index = buttons.reduce((closest, _, i) =>
       Math.abs(cardOffset(i) - strip.scrollLeft) < Math.abs(cardOffset(closest) - strip.scrollLeft) ? i : closest, 0);
     select(index);

@@ -372,3 +372,6 @@ html:not([data-pages-demo]) [data-pending-messenger] { display: none; }
 @media (max-width: 560px) {
   .seo-footer .contact-messengers { grid-column: 1; }
 }
+
+.editorial-hero-text { grid-template-columns: minmax(0, 820px); }
+.editorial-title time.story-date, .editorial-cards time.story-date { display: block; }
