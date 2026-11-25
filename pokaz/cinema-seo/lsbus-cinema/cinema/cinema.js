@@ -314,18 +314,57 @@ if(document.body.dataset.page==='fleet'){
   function renderCatalog(){const pax=Number($('#catalog-passengers').value)||0;const cars=fleet.filter(c=>(group==='all'||c.group===group)&&(!pax||c.seats>=pax));$('#catalog-count').textContent=cars.length+' из '+fleet.length+' моделей';$$('[data-group]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.group===group)));$('#catalog-grid').innerHTML=cars.length?cars.map(c=>`<article class="vehicle-card"><a href="${vehicleHref(c.id)}"><div class="vehicle-image"><img src="${esc(photoUrl(c.photos[0]))}" alt="${esc(c.name)}" loading="lazy">${c.coverNote?`<span class="vehicle-cover-note">${esc(c.coverNote)}</span>`:''}</div><div class="vehicle-meta"><span>${names[c.group]}</span><span>${carCapacity(c)}</span></div><h2>${esc(c.name)}</h2><div class="price-row"><strong>${c.price===null?'По запросу':'от '+rub(c.price)+' / ч'}</strong><span>Подробнее о машине</span></div></a></article>`).join(''):`<div class="empty-state"><h2>Для ${esc(pax)} человек<br>подберём несколько машин.</h2><p>Расскажите о маршруте — согласуем состав транспорта.</p><button class="button dark" data-book>Рассчитать поездку</button><button class="button" id="catalog-reset">Сбросить фильтры</button></div>`;$('#catalog-reset')?.addEventListener('click',()=>{group='all';$('#catalog-passengers').value='';renderCatalog();});}
   $$('[data-group]').forEach(b=>b.addEventListener('click',()=>{group=b.dataset.group;renderCatalog();}));$('#catalog-passengers').addEventListener('input',e=>{if(Number(e.target.value)>0&&Number(e.target.value)<=500)state.passengers=Number(e.target.value);renderCatalog();});renderCatalog();
 }
-if(document.body.dataset.page==='transport'){
-  const id=document.body.dataset.vehicle||new URLSearchParams(location.search).get('id')||'yutong-6122h9',car=fleet.find(c=>c.id===id);if(!car){$('#transport-content').innerHTML=`<section class="page-intro shell"><h1>Машина не найдена.</h1><a class="underlined" href="${fleetHref}">Вернуться в автопарк</a></section>`;}
-  else{if(!publicRoutes)document.title=car.name+' с водителем — LSBUS';let slide=0,hours=4;$('#transport-name').textContent=car.name;$('#transport-breadcrumb').textContent=car.name;$('#transport-category').textContent=carCapacity(car)+' · Санкт-Петербург';$('#transport-copy').innerHTML=car.text.split('\n\n').map(paragraph=>'<p>'+esc(paragraph)+'</p>').join('');$('#transport-equipment').innerHTML=car.amen.map(a=>`<span>${esc(L.amen[a])}</span>`).join('');$('#transport-specs').innerHTML=[...car.specs,['Водитель','Включён в аренду']].map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');$('#transport-price').innerHTML=car.price===null?'По запросу':`от ${rub(car.price)} <small>за час</small>`;
-    const priced=car.price!==null; $('.hours-control').hidden=!priced; $('.price-total').hidden=!priced;$('#transport-book').dataset.car=car.id;
-    $('#gallery-dots').innerHTML=car.photos.map((src,i)=>`<button type="button" data-photo="${i}" aria-label="${esc(car.photoLabels?.[i] || 'Фото '+(i+1))}" aria-pressed="${i===0}"><img src="${esc(photoUrl(src))}" alt="" loading="lazy"></button>`).join('');
-    const note = $('#transport-cover-note');
-    note.textContent = car.coverNote || '';
-    const drawGallery=()=>{
-      note.hidden = !car.coverNote || slide !== 0;
-      $('#vehicle-photo').src=photoUrl(car.photos[slide]);$('#vehicle-photo').alt=car.name+' — '+(car.photoLabels?.[slide]||'фото '+(slide+1));$$('[data-photo]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.photo)===slide)));$('#gallery-count').textContent=(slide+1)+' / '+car.photos.length;};
-    $$('[data-photo]').forEach(b=>b.addEventListener('click',()=>{slide=Number(b.dataset.photo);drawGallery();}));$('#gallery-previous').addEventListener('click',()=>{slide=(slide-1+car.photos.length)%car.photos.length;drawGallery();});$('#gallery-next').addEventListener('click',()=>{slide=(slide+1)%car.photos.length;drawGallery();});
-    const drawPrice=()=>{$('#vehicle-hours').textContent=hours;$('#vehicle-total').textContent=rub(car.price*hours);$('#hours-less').disabled=hours===4;$('#hours-more').disabled=hours===14;state.hours=hours;};$('#hours-less').addEventListener('click',()=>{hours=Math.max(4,hours-1);drawPrice();});$('#hours-more').addEventListener('click',()=>{hours=Math.min(14,hours+1);drawPrice();});drawGallery();if(priced)drawPrice();
+if (document.body.dataset.page === 'transport') {
+  const car = fleet.find(model => model.id === document.body.dataset.vehicle);
+  if (car) {
+    const viewer = $('#vehicle-viewer');
+    const image = $('#vehicle-viewer-photo');
+    const caption = $('#vehicle-viewer-caption');
+    const count = $('#vehicle-viewer-count');
+    let slide = 0;
+
+    function showPhoto(index) {
+      slide = (index + car.photos.length) % car.photos.length;
+      const label = slide === 0 && car.coverNote ? car.coverNote : car.photoLabels?.[slide] || 'Фото ' + (slide + 1);
+      image.src = photoUrl(car.photos[slide]);
+      image.alt = car.name + ' — ' + label;
+      caption.textContent = label;
+      count.textContent = (slide + 1) + ' из ' + car.photos.length;
+    }
+
+    $$('.vehicle-gallery a[data-photo]').forEach(link => {
+      link.addEventListener('click', event => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        showPhoto(Number(link.dataset.photo));
+        openDialog(viewer);
+      });
+    });
+    $$('[data-viewer-step]').forEach(button => {
+      button.addEventListener('click', () => showPhoto(slide + Number(button.dataset.viewerStep)));
+    });
+    viewer.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault();
+      showPhoto(slide + (event.key === 'ArrowLeft' ? -1 : 1));
+    });
+
+    $('#transport-book').dataset.car = car.id;
+    if (car.price !== null) {
+      let hours = 4;
+      const less = $('#hours-less');
+      const more = $('#hours-more');
+      function updateEstimate() {
+        $('#vehicle-hours').textContent = hours;
+        $('#vehicle-total').textContent = rub(car.price * hours);
+        less.disabled = hours <= 4;
+        more.disabled = hours >= 14;
+        state.hours = hours;
+      }
+      less.addEventListener('click', () => { hours = Math.max(4, hours - 1); updateEstimate(); });
+      more.addEventListener('click', () => { hours = Math.min(14, hours + 1); updateEstimate(); });
+      updateEstimate();
+    }
   }
 }
 })();
