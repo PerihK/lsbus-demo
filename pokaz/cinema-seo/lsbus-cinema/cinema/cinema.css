@@ -361,17 +361,24 @@ dialog{border:0;padding:0;max-width:calc(100vw - 30px);max-height:calc(100svh - 
 .contact-messengers ul {
   display: flex; flex-wrap: wrap; gap: 7px; margin: 0; padding: 0; list-style: none;
 }
-.contact-messengers a, .contact-messengers .messenger-pending {
+.contact-messengers a {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
   padding: 6px 12px; border: 1px solid currentColor; border-radius: 3px; font-size: 13px;
 }
 .contact-messengers a:hover { background: #77777719; }
 .contact-messengers a:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-.contact-messengers .messenger-pending { opacity: .55; }
-html:not([data-pages-demo]) [data-pending-messenger] { display: none; }
 @media (max-width: 560px) {
   .seo-footer .contact-messengers { grid-column: 1; }
 }
 
 .editorial-hero-text { grid-template-columns: minmax(0, 820px); }
 .editorial-title time.story-date, .editorial-cards time.story-date { display: block; }
+
+
+#petersburg { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: clamp(26px, 5vw, 78px); }
+#petersburg .prologue-photo { padding-top: clamp(12px, 3vw, 52px); }
+#petersburg .prologue-photo img { display: block; aspect-ratio: 16 / 9; height: auto; object-position: center; }
+@media (max-width: 800px) {
+  #petersburg { grid-template-columns: 1fr; }
+  #petersburg .prologue-photo { padding-top: 0; margin: 0; width: 100%; }
+}
