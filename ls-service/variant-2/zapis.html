@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#e9e7df">
+  <meta name="description" content="Подготовка пробной заявки в ЛС‑Сервис.">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="workshop.css">
+  <script defer src="workshop.js"></script>
+  <title>Запись в сервис · ЛС‑Сервис</title>
+</head>
+<body class="inside">
+  <a class="skip" href="#main">К содержанию</a>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="wordmark" href="./" aria-label="ЛС‑Сервис, главная"><img src="assets/logo-light.png" alt="LS Service" width="500" height="230"></a>
+      <nav class="topnav" aria-label="Основная навигация"><a href="uslugi.html">Услуги</a><a href="masterskaya.html">Мастерская</a><a href="o-servise.html">О сервисе</a><a href="kontakty.html">Контакты</a></nav>
+      <div class="top-actions"><a class="button" href="zapis.html">Запись в сервис</a><button class="menu-control" type="button" aria-haspopup="dialog" aria-controls="site-menu" hidden>Меню</button></div>
+    </div>
+  </header>
+  <dialog id="site-menu" class="site-menu" aria-label="Меню сайта">
+    <div class="shell">
+      <form method="dialog"><button class="menu-control" type="submit" autofocus>Закрыть</button></form>
+      <nav aria-label="Разделы сайта"><a href="./">Главная</a><a href="uslugi.html">Услуги</a><a href="masterskaya.html">Мастерская</a><a href="o-servise.html">О сервисе</a><a href="kontakty.html">Контакты</a><a href="zapis.html" aria-current="page">Запись в сервис</a></nav>
+    </div>
+  </dialog>
+  <main id="main"><header class="shell inside-heading"><nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="./">Главная</a><span aria-hidden="true">/</span><span aria-current="page">Запись в сервис</span>
+      </nav><h1>Запись в сервис</h1><p>Выберите услугу и укажите, с чем нужно помочь.</p></header>
+      <div class="shell booking-grid">
+        <form class="booking" id="request" aria-labelledby="request-title">
+          <h2 id="request-title">Данные для заявки</h2><p class="demo-note">Демо-форма. Можно использовать условные данные.</p>
+          <noscript><p>Для проверки формы включите JavaScript.</p></noscript>
+          <fieldset class="booking-fields" disabled aria-labelledby="request-title">
+            <fieldset class="booking-format"><legend>Транспорт</legend>
+              <label><input type="radio" name="format" value="single" checked> Одна машина</label>
+              <label><input type="radio" name="format" value="park"> Автопарк</label>
+            </fieldset>
+            <div class="form-grid">
+              <label>Услуга<select name="service" required><option value="">Выберите услугу</option><option value="to">Обслуживание</option><option value="diagnostika">Диагностика</option><option value="remont">Ремонт</option><option value="other">Другой вопрос</option></select></label>
+              <label><span data-vehicle-label>Марка и модель</span><input name="vehicle" placeholder="Например, Yutong" required maxlength="140"></label>
+              <label>Имя<input name="name" autocomplete="name" required maxlength="80"></label>
+              <label>Телефон<input name="phone" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00" required maxlength="32"></label>
+              <label class="wide">Описание задачи<textarea name="details" rows="3" maxlength="1000"></textarea></label>
+            </div>
+            <button class="button" type="submit">Проверить заявку</button>
+          </fieldset>
+          <p class="form-status" role="status"></p>
+        </form>
+        <aside class="prep"><h2>Что подготовить</h2>
+          <p data-note="default">Выберите услугу, чтобы увидеть список. Для начала пригодятся модель, пробег и описание задачи.</p>
+          <div data-note="to" hidden><h3>Обслуживание</h3><ul class="prep-list"><li><h3>Сверьте пробег</h3><p>Запишите текущий пробег и дату последнего ТО. Если есть сервисная книжка, подготовьте её.</p></li><li><h3>Уточните регламент</h3><p>Перечень операций зависит от модели и истории обслуживания. Обсудите его до визита.</p></li><li><h3>Найдите окно в графике</h3><p>Для машины с регулярным маршрутом укажите, когда её можно снять с линии.</p></li></ul></div><div data-note="diagnostika" hidden><h3>Диагностика</h3><ul class="prep-list"><li><h3>Опишите симптомы</h3><p>Уточните, когда возникает неисправность. Например, после запуска, при разгоне или под нагрузкой.</p></li><li><h3>Запишите ошибки</h3><p>Если на панели есть код или предупреждение, запишите его. Пригодятся и результаты прошлых проверок.</p></li><li><h3>Обсудите дальнейшие работы</h3><p>После осмотра можно уточнить причину проблемы и согласовать следующий шаг.</p></li></ul></div><div data-note="remont" hidden><h3>Ремонт</h3><ul class="prep-list"><li><h3>Укажите известную причину</h3><p>Если неисправность уже нашли, назовите узел и подготовьте заключение, если оно есть.</p></li><li><h3>Согласуйте объём</h3><p>До начала работ уточните перечень операций, доступность деталей и сроки.</p></li><li><h3>Выберите время</h3><p>Если техника в рейсовом графике, укажите, когда возможен визит и когда машина нужна обратно.</p></li></ul></div>
+          <p class="park-note" hidden>Для автопарка добавьте количество машин и даты, когда их можно снять с линии.</p>
+        </aside>
+      </div></main>
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-grid">
+        <a class="wordmark" href="./" aria-label="ЛС‑Сервис, главная"><img src="assets/logo-light.png" alt="LS Service" width="500" height="230" loading="lazy"></a>
+        <nav aria-label="Карта сайта"><a href="uslugi.html">Услуги</a><a href="masterskaya.html">Мастерская</a><a href="o-servise.html">О сервисе</a><a href="kontakty.html">Контакты</a></nav>
+        <div><p>Ленинградское шоссе, 99</p><a href="zapis.html">Запись в сервис</a></div>
+      </div>
+      <div class="footer-end"><small>ООО «ЛС‑Сервис»</small><a href="#main">К началу страницы</a></div>
+    </div>
+  </footer>
+</body>
+</html>

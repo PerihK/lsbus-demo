@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#e9e7df">
+  <meta name="description" content="ТО, диагностика и ремонт транспорта в ЛС‑Сервисе.">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="workshop.css">
+  <script defer src="workshop.js"></script>
+  <title>Обслуживание и ремонт транспорта · ЛС‑Сервис</title>
+</head>
+<body class="home">
+  <a class="skip" href="#main">К содержанию</a>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="wordmark" href="./" aria-label="ЛС‑Сервис, главная"><img src="assets/logo-light.png" alt="LS Service" width="500" height="230"></a>
+      <nav class="topnav" aria-label="Основная навигация"><a href="uslugi.html">Услуги</a><a href="masterskaya.html">Мастерская</a><a href="o-servise.html">О сервисе</a><a href="kontakty.html">Контакты</a></nav>
+      <div class="top-actions"><a class="button" href="zapis.html">Запись в сервис</a><button class="menu-control" type="button" aria-haspopup="dialog" aria-controls="site-menu" hidden>Меню</button></div>
+    </div>
+  </header>
+  <dialog id="site-menu" class="site-menu" aria-label="Меню сайта">
+    <div class="shell">
+      <form method="dialog"><button class="menu-control" type="submit" autofocus>Закрыть</button></form>
+      <nav aria-label="Разделы сайта"><a href="./">Главная</a><a href="uslugi.html">Услуги</a><a href="masterskaya.html">Мастерская</a><a href="o-servise.html">О сервисе</a><a href="kontakty.html">Контакты</a><a href="zapis.html">Запись в сервис</a></nav>
+    </div>
+  </dialog>
+  <main id="main"><section class="blueprint mast" aria-labelledby="hero-title">
+  <div class="shell">
+    <div class="mast-datum"><span>ООО «ЛС‑Сервис»</span><a href="kontakty.html">Ленинградское шоссе, 99</a></div>
+    <div class="mast-layout">
+      <div class="mast-copy">
+        <p class="eyebrow"><span class="index-mark">01</span> Обслуживание транспорта</p>
+        <h1 id="hero-title">Сначала<br><em>диагностика.</em></h1>
+        <p>Техническое обслуживание, диагностика и ремонт. Запланируйте визит для одной машины или обсудите график работ для автопарка.</p>
+        <div class="hero-actions">
+          <a class="button" href="zapis.html">Записаться в сервис</a>
+          <a class="text-button" href="#directions">Смотреть услуги</a>
+        </div>
+      </div>
+      <section class="engine" id="engine" aria-labelledby="engine-title">
+        <div class="engine-top"><h2 id="engine-title">Моторная часть автобуса</h2>
+          <div class="engine-views" role="group" aria-label="Вид схемы" hidden>
+            <button type="button" data-view="bay" aria-controls="engine-bay" aria-pressed="true">Моторный отсек</button>
+            <button type="button" data-view="motor" aria-controls="engine-motor" aria-pressed="false">Двигатель по деталям</button>
+          </div>
+        </div>
+        <figure id="engine-bay" data-panel="bay">
+          <div class="engine-plate">
+            <img src="assets/coach-cutaway.webp" alt="Задняя секция автобуса в разрезе. Рядом с открытым моторным отсеком показан извлечённый двигатель." width="1536" height="1024" fetchpriority="high">
+            <div class="engine-markers" hidden>
+              <button type="button" class="engine-point point-bay" data-part="bay" aria-label="Моторный отсек" aria-pressed="true">01</button>
+              <button type="button" class="engine-point point-rear" data-part="axle" aria-label="Задняя ось" aria-pressed="false">02</button>
+              <button type="button" class="engine-point point-motor" data-part="diesel" aria-label="Дизельный двигатель" aria-pressed="false">03</button>
+            </div>
+          </div>
+          <figcaption class="engine-caption">
+            <p>Иллюстрация задней секции автобуса</p>
+            <div class="engine-panel" hidden>
+              <div class="engine-select" role="group" aria-label="Задняя секция автобуса">
+                <button type="button" data-part="bay" aria-pressed="true">Отсек</button>
+                <button type="button" data-part="axle" aria-pressed="false">Задняя ось</button>
+                <button type="button" data-part="diesel" aria-pressed="false">Двигатель</button>
+              </div>
+              <p class="engine-note" aria-live="polite"><strong>Моторный отсек.</strong> У этого автобуса двигатель установлен сзади. К нему подходят через поднятый сервисный люк.</p>
+            </div>
+          </figcaption>
+        </figure>
+        <figure id="engine-motor" data-panel="motor" hidden>
+          <div class="engine-plate">
+            <img src="assets/engine-exploded.webp" alt="Разобранный дизельный двигатель: головка, поршни, блок цилиндров и турбокомпрессор" width="1536" height="1024">
+            <div class="engine-markers" hidden>
+              <button type="button" class="engine-point point-head" data-part="head" aria-label="Головка блока" aria-pressed="true">01</button>
+              <button type="button" class="engine-point point-block" data-part="block" aria-label="Блок цилиндров" aria-pressed="false">02</button>
+              <button type="button" class="engine-point point-turbo" data-part="turbo" aria-label="Турбокомпрессор" aria-pressed="false">03</button>
+            </div>
+          </div>
+          <figcaption class="engine-caption">
+            <p>Иллюстрация шестицилиндрового дизельного двигателя</p>
+            <div class="engine-panel" hidden>
+              <div class="engine-select" role="group" aria-label="Узлы двигателя">
+                <button type="button" data-part="head" aria-pressed="true">Головка</button>
+                <button type="button" data-part="block" aria-pressed="false">Блок цилиндров</button>
+                <button type="button" data-part="turbo" aria-pressed="false">Турбокомпрессор</button>
+              </div>
+              <p class="engine-note" aria-live="polite"><strong>Головка блока.</strong> В ней находятся клапаны, которые впускают воздух и выпускают отработавшие газы.</p>
+            </div>
+          </figcaption>
+        </figure>
+      </section>
+    </div>
+  </div>
+</section>
+<section class="entry-strip" aria-label="Быстрый переход">
+  <div class="shell"><a href="obsluzhivanie.html">Плановое ТО</a><a href="diagnostika.html">Диагностика</a><a href="remont.html">Ремонт</a><a href="autopark.html">Для автопарков</a></div>
+</section>
+
+<section class="proof blueprint section-pad">
+  <div class="shell proof-grid">
+    <figure class="detail-picture appear"><img src="assets/service-diagnostic.jpg" width="1440" height="960" alt="" loading="lazy"><figcaption>Иллюстрация</figcaption></figure>
+    <div class="proof-copy appear">
+      <p class="eyebrow"><span class="index-mark">02</span> От осмотра к ремонту</p>
+      <h2>Найти причину.<br><em>Согласовать работы.</em></h2>
+      <p>Ошибка, шум или вибрация помогают понять, где начать поиск. После осмотра можно обсудить, какие работы понадобятся и когда машина вернётся на маршрут.</p>
+      <ul class="proof-list"><li>Укажите, когда и при каких условиях проявляется неисправность.</li><li>Приложите код ошибки или результаты предыдущей диагностики.</li><li>Сообщите, когда транспорт нужен на линии.</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="service-system section-pad" id="directions" aria-label="Направления сервиса">
+      <div class="shell service-layout"><div class="service-intro">
+      <p class="eyebrow"><span class="index-mark">03</span> Направления сервиса</p>
+      <h2>От ТО<br><em>до ремонта.</em></h2>
+      <p>Выберите задачу, чтобы узнать, что подготовить перед визитом.</p></div><ul class="service-rows"><li><a class="service-row" href="obsluzhivanie.html">
+          <span class="row-number" aria-hidden="true">01</span>
+          <h3>Обслуживание</h3><p>Плановое ТО с учётом пробега, регламента и состояния машины.</p></a></li><li><a class="service-row" href="diagnostika.html">
+          <span class="row-number" aria-hidden="true">02</span>
+          <h3>Диагностика</h3><p>Осмотр транспорта, когда появилась ошибка, вибрация, шум или изменилась работа машины.</p></a></li><li><a class="service-row" href="remont.html">
+          <span class="row-number" aria-hidden="true">03</span>
+          <h3>Ремонт</h3><p>Ремонт по итогам осмотра или по задаче, с которой вы уже обращались на диагностику.</p></a></li><li><a class="service-row" href="autopark.html">
+          <span class="row-number" aria-hidden="true">04</span>
+          <h3>Обслуживание автопарка</h3><p>Обсудите обслуживание нескольких машин с учётом графика рейсов.</p></a></li></ul></div>
+    </section>
+
+<section class="gallery-band">
+  <div class="shell gallery-band-inner">
+    <div class="gallery-band-copy appear"><p class="eyebrow">Мастерская</p><h2>Работа в деталях.</h2><p>От заезда в бокс и диагностики до выдачи транспорта.</p><a class="button button-outline" href="masterskaya.html">Смотреть галерею</a></div>
+    <figure class="gallery-cover appear"><img src="assets/service-corner.jpg" alt="" width="1440" height="810" loading="lazy"><figcaption>Иллюстрация</figcaption></figure>
+  </div>
+</section>
+
+<section class="method blueprint section-pad">
+  <div class="shell">
+    <header class="section-heading appear">
+      <div><p class="eyebrow"><span class="index-mark">04</span> Порядок визита</p><h2>От заявки до выдачи.</h2></div>
+      <p>Выберите удобное время. После осмотра обсудите перечень работ, детали и срок.</p>
+    </header>
+    <ol class="step-grid"><li class="appear"><h3>Запись</h3><p>Укажите модель, пробег и задачу. Для автопарка — количество машин и доступные даты.</p></li><li class="appear"><h3>Приёмка</h3><p>До визита согласуйте время и въезд. Привезите результаты диагностики, если они есть.</p></li><li class="appear"><h3>Осмотр и работы</h3><p>После осмотра уточните перечень операций, сроки и наличие деталей.</p></li><li class="appear"><h3>Выдача</h3><p>Сверьте выполненные работы и согласуйте, когда можно забрать машину.</p></li></ol>
+  </div>
+</section>
+
+<section class="intake section-pad">
+  <div class="shell intake-layout">
+    <header class="appear">
+      <p class="eyebrow"><span class="index-mark">05</span> Приём транспорта</p>
+      <h2>Запланируйте<br>визит.</h2>
+      <p>Сообщите модель, пробег и задачу. Для автопарка добавьте количество машин и удобные даты.</p>
+    </header>
+    <article class="intake-card appear">
+      <p class="eyebrow">Адрес мастерской</p>
+      <h3>Ленинградское<br>шоссе, 99</h3>
+      <p>Перед выездом уточните населённый пункт, время визита и точку въезда.</p>
+      <div class="hero-actions"><a class="button" href="zapis.html">Записаться в сервис</a><a class="text-button" href="kontakty.html">Контакты</a></div>
+    </article>
+  </div>
+</section>
+
+<section class="section-pad shell faq">
+  <div class="appear"><p class="eyebrow">Перед визитом</p><h2>Вопросы<br>и ответы.</h2></div>
+  <div class="appear"><details class="question"><summary>Что указать при записи?</summary><p>Достаточно марки и модели, пробега и краткого описания задачи. Если есть код ошибки, добавьте его.</p></details><details class="question"><summary>Когда будет понятна стоимость?</summary><p>Предварительную оценку уточняют по задаче. Если причина неисправности неизвестна, сначала нужен осмотр.</p></details><details class="question"><summary>Можно записать сразу несколько машин?</summary><p>Да, в форме есть вариант «Автопарк». Укажите количество, модели и подходящие даты.</p></details><details class="question"><summary>Где находится въезд?</summary><p>Адрес — Ленинградское шоссе, 99. Населённый пункт и точку въезда нужно подтвердить перед визитом.</p></details></div>
+</section>
+</main>
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-grid">
+        <a class="wordmark" href="./" aria-label="ЛС‑Сервис, главная"><img src="assets/logo-light.png" alt="LS Service" width="500" height="230" loading="lazy"></a>
+        <nav aria-label="Карта сайта"><a href="uslugi.html">Услуги</a><a href="masterskaya.html">Мастерская</a><a href="o-servise.html">О сервисе</a><a href="kontakty.html">Контакты</a></nav>
+        <div><p>Ленинградское шоссе, 99</p><a href="zapis.html">Запись в сервис</a></div>
+      </div>
+      <div class="footer-end"><small>ООО «ЛС‑Сервис»</small><a href="#main">К началу страницы</a></div>
+    </div>
+  </footer>
+</body>
+</html>

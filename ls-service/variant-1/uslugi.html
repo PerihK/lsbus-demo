@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#141918">
+  <meta name="description" content="Обслуживание, диагностика и ремонт транспорта.">
+  <title>Услуги · ЛС‑Сервис</title>
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="service.css">
+  <link rel="stylesheet" href="pages.css">
+  <script defer src="site.js"></script>
+</head>
+<body class="service-home inside">
+  <a class="skip" href="#main">К содержанию</a>
+  <header class="masthead">
+    <div class="frame masthead-inner">
+      <a class="masthead-logo" href="./" aria-label="ЛС‑Сервис, главная"><img src="assets/logo-light.png" width="500" height="230" alt="LS Service"></a>
+      <nav class="desktop-nav" aria-label="Навигация по сайту"><a href="uslugi.html" aria-current="page">Услуги</a><a href="o-servise.html">О сервисе</a><a href="kontakty.html">Контакты</a></nav>
+      <div class="masthead-actions">
+        <a class="outline-link" href="zapis.html">Записаться</a>
+        <button class="menu-toggle" type="button" aria-haspopup="dialog" hidden>Меню <span aria-hidden="true"></span></button>
+      </div>
+    </div>
+  </header>
+  <dialog class="site-menu" aria-label="Меню сайта">
+    <div class="frame">
+      <form method="dialog"><button class="menu-close" type="submit" autofocus>Закрыть <span aria-hidden="true">×</span></button></form>
+      <nav aria-label="Разделы сайта"><a href="./">Главная</a><a href="uslugi.html" aria-current="page">Услуги</a><a href="o-servise.html">О сервисе</a><a href="kontakty.html">Контакты</a><a href="zapis.html">Запись в сервис</a></nav>
+    </div>
+  </dialog>
+  <main id="main">
+<header class="inside-head frame">
+      <nav class="crumbs" aria-label="Хлебные крошки"><a href="./">Главная</a><span aria-hidden="true">/</span><span aria-current="page">Услуги</span></nav>
+      <h1 class="display-title">Услуги</h1><p>Откройте нужный раздел, чтобы узнать, что подготовить к визиту.</p>
+    </header><section class="frame catalogue" aria-label="Услуги сервиса"><div class="service-cards"><article class="service-card rise">
+          <a href="obsluzhivanie.html">
+            <figure><img src="assets/service-detail.jpg" alt="" loading="lazy" decoding="async"><figcaption>Иллюстрация</figcaption></figure>
+            <div class="service-card-body"><h3>Обслуживание</h3><p>Плановое ТО с учётом пробега, регламента и состояния машины.</p><span class="card-detail" aria-hidden="true">Подробнее</span></div>
+          </a>
+        </article><article class="service-card rise">
+          <a href="diagnostika.html">
+            <figure><img src="assets/service-diagnostic.jpg" alt="" loading="lazy" decoding="async"><figcaption>Иллюстрация</figcaption></figure>
+            <div class="service-card-body"><h3>Диагностика</h3><p>Осмотр транспорта, когда появилась ошибка, вибрация, шум или изменилась работа машины.</p><span class="card-detail" aria-hidden="true">Подробнее</span></div>
+          </a>
+        </article><article class="service-card rise">
+          <a href="remont.html">
+            <figure><img src="assets/service-departure.jpg" alt="" loading="lazy" decoding="async"><figcaption>Иллюстрация</figcaption></figure>
+            <div class="service-card-body"><h3>Ремонт</h3><p>Ремонт по итогам осмотра или по задаче, с которой вы уже обращались на диагностику.</p><span class="card-detail" aria-hidden="true">Подробнее</span></div>
+          </a>
+        </article></div></section><section class="service-finder" id="podbor" aria-labelledby="finder-title">
+      <div class="frame finder-layout">
+        <div class="finder-choices">
+          <p class="section-label">Подбор услуги</p>
+          <h2 id="finder-title">Что происходит<br>с машиной?</h2>
+          <fieldset aria-labelledby="finder-title" disabled>
+          <label><input type="radio" name="situation" value="to" checked><span>Подошёл срок ТО</span></label>
+          <label><input type="radio" name="situation" value="diagnostika"><span>Появился шум или ошибка</span></label>
+          <label><input type="radio" name="situation" value="remont"><span>Неисправность уже известна</span></label></fieldset>
+        </div>
+        <div class="finder-recommendation">
+          <p class="section-label">С чего начать</p>
+          <p class="finder-announcement" role="status"></p>
+          <div class="finder-result" data-result="to">
+            <h3>Обслуживание</h3>
+            <p>Запишите текущий пробег и дату последнего ТО. Если есть сервисная книжка, подготовьте её.</p>
+            <div class="finder-actions">
+              <a href="zapis.html?service=to" class="solid-link">Записаться</a>
+              <a href="obsluzhivanie.html" class="text-link">Об услуге</a>
+            </div>
+          </div>
+          <div class="finder-result" data-result="diagnostika" hidden>
+            <h3>Диагностика</h3>
+            <p>Уточните, когда возникает неисправность. Например, после запуска, при разгоне или под нагрузкой.</p>
+            <div class="finder-actions">
+              <a href="zapis.html?service=diagnostika" class="solid-link">Записаться</a>
+              <a href="diagnostika.html" class="text-link">Об услуге</a>
+            </div>
+          </div>
+          <div class="finder-result" data-result="remont" hidden>
+            <h3>Ремонт</h3>
+            <p>Если неисправность уже нашли, назовите узел и подготовьте заключение, если оно есть.</p>
+            <div class="finder-actions">
+              <a href="zapis.html?service=remont" class="solid-link">Записаться</a>
+              <a href="remont.html" class="text-link">Об услуге</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><section class="visit-cta"><div class="frame visit-cta-layout">
+      <h2 class="display-title">До встречи<br><em>в сервисе.</em></h2><a href="zapis.html" class="solid-link">Записаться в сервис</a>
+    </div></section>
+  </main>
+  <footer class="closing">
+    <div class="frame">
+      <div class="footer-layout">
+        <a class="masthead-logo" href="./" aria-label="ЛС‑Сервис, главная"><img src="assets/logo-light.png" width="500" height="230" alt="LS Service" loading="lazy"></a>
+        <nav aria-label="Карта сайта"><a href="uslugi.html" aria-current="page">Услуги</a><a href="o-servise.html">О сервисе</a><a href="kontakty.html">Контакты</a></nav>
+        <div><p>Ленинградское шоссе, 99</p><a href="kontakty.html">Адрес и подготовка к визиту</a></div>
+      </div>
+      <div class="closing-inner"><span>ООО «ЛС‑Сервис»</span><a href="#main">Наверх</a></div>
+    </div>
+  </footer>
+</body>
+</html>
